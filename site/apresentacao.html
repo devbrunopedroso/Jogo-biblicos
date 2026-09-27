@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.home-link{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;
+  font:400 20px 'VT323',ui-monospace,Menlo,monospace;color:#F4F1FF;background:rgba(17,15,54,.9);
+  border:2px solid #3B358F;border-radius:10px;padding:4px 12px;text-decoration:none;opacity:.55}
+.home-link:hover,.home-link:focus-visible{opacity:1;border-color:#5EC8FF}</style>
+</head>
+<body>
+<title>O Antivírus de Paulo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;700;800;900&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#110F36; --bg2:#19164B; --panel:#211D5E; --panel2:#2A2573; --line:#3B358F;
+  --ink:#F4F1FF; --mute:#ABA6DB;
+  --gold:#FFC940; --gold-ink:#2A1E00;
+  --virus:#FF4F8B; --sky:#5EC8FF; --ok:#46E0A0;
+  --display:'Bungee','Arial Black',Impact,system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'VT323',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#07061F;color:var(--ink);font-family:var(--body);font-weight:700}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+
+/* palco 16:9 escalado para caber na tela */
+#viewport{position:fixed;inset:0;display:grid;place-items:center}
+#stage{position:relative;width:1600px;height:900px;transform-origin:center;overflow:hidden;border-radius:6px;
+  background-color:var(--bg);
+  background-image:linear-gradient(rgba(94,200,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(94,200,255,.06) 1px,transparent 1px);
+  background-size:50px 50px}
+.slide{position:absolute;inset:0;padding:70px 90px 90px;display:flex;flex-direction:column;justify-content:center;gap:28px;visibility:hidden}
+.slide.on{visibility:visible}
+
+/* tipografia */
+.eyebrow{font-family:var(--mono);font-size:38px;letter-spacing:.1em;color:var(--sky);text-transform:uppercase;line-height:1}
+.h1{font-family:var(--display);font-size:150px;line-height:.92;margin:0}
+.h2{font-family:var(--display);font-size:84px;line-height:1;margin:0}
+.h3{font-family:var(--display);font-size:52px;line-height:1.05;margin:0}
+.big{font-size:44px;line-height:1.35;font-weight:800;max-width:30ch}
+.mid{font-size:36px;line-height:1.4;font-weight:800}
+.mute{color:var(--mute)}
+.gold{color:var(--gold)} .sky{color:var(--sky)} .pink{color:var(--virus)} .green{color:var(--ok)}
+.center{align-items:center;text-align:center}
+.glitch{text-shadow:5px 0 var(--virus),-5px 0 var(--sky)}
+.row{display:flex;gap:28px;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+
+/* passos revelados um a um */
+.step{opacity:0;transform:translateY(24px);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.9,.3,1.2)}
+.step.shown{opacity:1;transform:none}
+
+/* entrada do slide */
+@media (prefers-reduced-motion:no-preference){
+  .slide.on.enter{animation:enter .55s steps(1) , fadein .5s ease-out}
+  @keyframes enter{0%{transform:translateX(12px) skewX(-4deg);filter:hue-rotate(40deg)}12%{transform:translateX(-10px)}24%{transform:none;filter:none}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .glitch.anim{animation:glitch 2.4s infinite steps(1)}
+  @keyframes glitch{0%,86%,100%{text-shadow:5px 0 var(--virus),-5px 0 var(--sky);transform:none}
+    88%{text-shadow:-9px 0 var(--virus),9px 0 var(--sky);transform:translateX(5px) skewX(-6deg)}
+    91%{text-shadow:9px 3px var(--virus),-9px -3px var(--sky);transform:translateX(-6px)}}
+  .float{animation:floaty 4s ease-in-out infinite}
+  @keyframes floaty{50%{transform:translateY(-14px)}}
+  .pulse{animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 8px rgba(255,201,64,.25),0 0 60px rgba(255,201,64,.5)}}
+  .blink{animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+}
+
+/* level cards (recap) */
+.lvl{background:var(--panel);border:4px solid var(--line);border-radius:26px;padding:34px;display:flex;flex-direction:column;gap:14px;min-height:300px}
+.lvl .n{font-family:var(--mono);font-size:34px;color:var(--sky)}
+.lvl .t{font-family:var(--display);font-size:46px;line-height:1.05}
+.lvl .v{font-size:26px;color:var(--mute)}
+.lvl.done{border-color:var(--ok)} .lvl.done .n{color:var(--ok)}
+.lvl.lock{border-style:dashed;align-items:center;justify-content:center;text-align:center}
+.lvl.lock .t{color:var(--gold)}
+.lvl.unlocked{border:4px solid var(--gold);background:#2E2660}
+
+/* versículo */
+.verse{font-size:50px;line-height:1.45;font-weight:800;max-width:34ch}
+.verse .w{font-family:var(--display);font-weight:400;color:var(--gold);font-size:.9em}
+.ref{font-family:var(--mono);font-size:40px;color:var(--sky)}
+
+/* peça do computador */
+.part{display:grid;grid-template-columns:540px 1fr;gap:60px;align-items:center}
+.art{width:540px;height:420px;border-radius:30px;background:radial-gradient(circle at 50% 45%,rgba(94,200,255,.2),transparent 70%),var(--bg2);border:4px solid var(--line);display:grid;place-items:center;position:relative}
+.art svg{width:78%;height:auto}
+.badge{position:absolute;top:-22px;left:30px;background:var(--gold);color:var(--gold-ink);font-family:var(--display);font-size:24px;padding:8px 18px;border-radius:12px}
+.pair{display:flex;flex-direction:column;gap:22px}
+.pc{border-radius:22px;padding:22px 28px;display:flex;flex-direction:column;gap:6px}
+.pc .l{font-family:var(--mono);font-size:30px;letter-spacing:.08em}
+.pc .x{font-size:34px;line-height:1.35;font-weight:800}
+.pc.comp{background:var(--panel);border:3px solid var(--sky)} .pc.comp .l{color:var(--sky)}
+.pc.mind{background:#2E2812;border:3px solid var(--gold)} .pc.mind .l{color:var(--gold)}
+.mount{font-family:var(--mono);font-size:30px;color:var(--ok);display:flex;align-items:center;gap:12px}
+
+/* boot */
+.term{background:#050414;border:4px solid var(--line);border-radius:22px;padding:34px 40px;font-family:var(--mono);font-size:40px;line-height:1.35;color:var(--ok);min-height:470px}
+.term .e{color:var(--virus)}
+.bar{height:34px;border:3px solid var(--ok);border-radius:8px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;width:0;background:var(--ok);transition:width 2.2s ease-in-out}
+.bar.go i{width:100%}
+
+/* vírus */
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.vcard{background:repeating-linear-gradient(-45deg,#2B1250 0 14px,#2F1357 14px 28px);border:3px solid var(--virus);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.vcard .l{font-family:var(--mono);font-size:26px;color:var(--virus);letter-spacing:.08em}
+.vcard .x{font-family:var(--display);font-size:28px;line-height:1.1}
+
+/* 6 firewalls */
+.fw6{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.fwc{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:0 0 24px;border-radius:20px;overflow:hidden;
+  background:linear-gradient(180deg,#2C2680 0%,var(--panel) 55%,#1A1650 100%);border:5px solid var(--gold);box-shadow:0 10px 0 #0B0A26}
+.fwc .band{width:100%;padding:8px;background:var(--gold);color:var(--gold-ink);font-family:var(--mono);font-size:26px;letter-spacing:.12em}
+.fwc svg{width:90px;height:auto;margin-top:8px}
+.fwc b{font-family:var(--display);font-weight:400;font-size:28px;color:var(--gold);line-height:1.05}
+
+/* slide de firewall */
+.fwslide{display:grid;grid-template-columns:430px 1fr;gap:56px;align-items:center;height:100%}
+.hero{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.hero .num{font-family:var(--mono);font-size:40px;color:var(--sky);letter-spacing:.1em}
+.hero svg{width:250px;height:auto;filter:drop-shadow(0 0 40px rgba(94,200,255,.5))}
+.hero .name{font-family:var(--display);font-size:68px;line-height:1;color:var(--gold)}
+.hero .all{font-size:30px;color:var(--mute)}
+.dots{display:flex;gap:10px}
+.dots i{width:18px;height:18px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--gold)}
+.three{display:flex;flex-direction:column;gap:22px}
+.box{border-radius:22px;padding:22px 28px 24px;display:grid;grid-template-columns:74px 1fr;gap:4px 22px;align-items:start}
+.box .ic{grid-row:span 2;width:74px;height:74px;border-radius:18px;display:grid;place-items:center}
+.box .ic svg{width:44px;height:44px}
+.box .l{font-family:var(--display);font-size:32px;line-height:1.1}
+.box .x{font-size:31px;line-height:1.38;font-weight:800}
+.box.what{background:#15324F;border:3px solid var(--sky)} .box.what .l{color:var(--sky)} .box.what .ic{background:var(--sky)}
+.box.game{background:#2E2812;border:3px solid var(--gold)} .box.game .l{color:var(--gold)} .box.game .ic{background:var(--gold)}
+.box.act{background:#12393F;border:3px solid var(--ok)} .box.act .l{color:var(--ok)} .box.act .ic{background:var(--ok)}
+
+/* teste do firewall */
+.tests{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.tcard{position:relative;background:var(--panel);border:3px solid var(--line);border-radius:20px;padding:26px 30px;font-size:34px;font-weight:900;line-height:1.3;min-height:150px;display:flex;align-items:center}
+.stamp{position:absolute;right:18px;bottom:14px;font-family:var(--display);font-size:30px;padding:6px 16px;border-radius:10px;transform:rotate(-6deg)}
+.stamp.pass{background:var(--gold);color:var(--gold-ink)}
+.stamp.block{background:var(--virus);color:#2D0616}
+
+/* oração */
+.oath{font-family:var(--display);font-size:72px;line-height:1.2;max-width:22ch}
+.oath em{font-style:normal;color:var(--gold)}
+
+/* chrome */
+.hud{position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:5;pointer-events:none}
+.hud .brand{font-family:var(--mono);font-size:28px;color:var(--mute);letter-spacing:.06em}
+.hud .cnt{font-family:var(--mono);font-size:28px;color:var(--mute)}
+.prog{position:absolute;left:0;bottom:0;height:6px;background:var(--gold);z-index:6;transition:width .4s}
+.more{position:absolute;right:30px;bottom:62px;font-family:var(--mono);font-size:26px;color:var(--sky);z-index:5}
+.ctrls{position:fixed;right:16px;bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:20;opacity:.35;transition:opacity .2s}
+.ctrls:hover,.ctrls:focus-within{opacity:1}
+.ctrls button{font-family:var(--mono);font-size:22px;padding:6px 14px;border:2px solid var(--line);border-radius:10px;background:rgba(17,15,54,.9);color:var(--ink)}
+.ctrls button:hover{border-color:var(--sky)}
+#notes{position:fixed;left:16px;right:16px;bottom:calc(64px + env(safe-area-inset-bottom,0px));max-width:900px;margin:0 auto;background:rgba(17,15,54,.97);border:2px solid var(--sky);border-radius:14px;padding:16px 20px;font-size:18px;line-height:1.5;z-index:19;max-height:40vh;overflow:auto}
+#notes b{color:var(--sky);font-family:var(--mono);font-size:22px;letter-spacing:.06em;display:block;margin-bottom:4px}
+</style>
+
+<div id="viewport"><div id="stage">
+
+<!-- 1 CAPA -->
+<section class="slide center" data-notes="Entre como Game Master, de óculos escuros. 'Atenção, jogadores! Hoje vamos destravar o Level 3!'">
+  <div class="eyebrow">· Encontro 3</div>
+  <h1 class="h1 glitch anim">O Antivírus<br>de Paulo</h1>
+  <div class="mid sky">Level 3 · Nova Mentalidade · Filipenses 4:8</div>
+</section>
+
+<!-- 2 RECAP -->
+<section class="slide" data-notes="Pergunte: 'Level 1: o que recebemos em Cristo?' (Nova Identidade). 'Level 2: o que fazemos todo dia?' (Nova Escolha). Depois clique para destravar o Level 3." data-unlock="1">
+  <div class="eyebrow">Onde estamos no jogo</div>
+  <h2 class="h2">Levels destravados</h2>
+  <div class="grid3">
+    <div class="lvl done"><span class="n">LEVEL 1 ✓</span><span class="t">Nova Identidade</span><span class="v">2 Coríntios 5:17</span></div>
+    <div class="lvl done"><span class="n">LEVEL 2 ✓</span><span class="t">Nova Escolha</span><span class="v">Colossenses 3:2</span></div>
+    <div class="lvl lock" id="lock3"><span class="n">LEVEL 3</span><span class="t" id="lock3t">🔒 Bloqueado</span><span class="v" id="lock3v">Clique para destravar</span></div>
+  </div>
+</section>
+
+<!-- 3 VERSÍCULO -->
+<section class="slide" data-notes="Leiam juntos em voz alta. Depois peça que repitam só as 6 palavras em dourado.">
+  <div class="eyebrow">Versículo-chave · o código de segurança</div>
+  <p class="verse">“Quanto ao mais, irmãos, tudo o que é <span class="w">verdadeiro</span>, tudo o que é <span class="w">honesto</span>, tudo o que é <span class="w">justo</span>, tudo o que é <span class="w">puro</span>, tudo o que é <span class="w">amável</span>, tudo o que é de <span class="w">boa fama</span>, se há alguma virtude, e se há algum louvor, <span class="gold">nisso pensai</span>.”</p>
+  <div class="ref">Filipenses 4:8</div>
+</section>
+
+<!-- 4 SEÇÃO COMPUTADOR -->
+<section class="slide center" data-notes="Traga o desktop desmontado. A cada slide, uma criança coloca a peça. Explique o que a peça faz no computador e depois compare com a nossa mente.">
+  <div class="eyebrow">Missão especial</div>
+  <h2 class="h2">Vamos montar<br><span class="gold">um computador!</span></h2>
+  <p class="big mute step">Cada peça do computador tem algo para nos ensinar sobre a nossa mente.</p>
+</section>
+
+<!-- 5 GABINETE -->
+<section class="slide" data-notes="Mostre o gabinete vazio. 'É aqui que tudo vai morar.'">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 1</span>
+      <svg viewBox="0 0 200 200"><rect x="55" y="15" width="90" height="170" rx="10" fill="#2A2573" stroke="#5EC8FF" stroke-width="5"/><rect x="70" y="32" width="60" height="12" rx="3" fill="#3B358F"/><rect x="70" y="52" width="60" height="12" rx="3" fill="#3B358F"/><circle cx="100" cy="155" r="11" fill="none" stroke="#46E0A0" stroke-width="5"/><line x1="100" y1="142" x2="100" y2="152" stroke="#46E0A0" stroke-width="5" stroke-linecap="round"/><g stroke="#3B358F" stroke-width="4"><line x1="72" y1="90" x2="128" y2="90"/><line x1="72" y1="102" x2="128" y2="102"/><line x1="72" y1="114" x2="128" y2="114"/></g></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Gabinete</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">É a caixa que guarda e protege todas as peças.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">É como o nosso corpo: a “casa” onde todo o sistema funciona.</span></div>
+      <div class="mount step">▶ Montagem: coloquem o gabinete na mesa!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 PLACA-MÃE -->
+<section class="slide" data-notes="Mostre as trilhas da placa. 'Ela liga tudo com tudo.'">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 2</span>
+      <svg viewBox="0 0 200 200"><rect x="20" y="25" width="160" height="150" rx="8" fill="#123B32" stroke="#46E0A0" stroke-width="5"/><rect x="75" y="60" width="50" height="50" rx="4" fill="#0D0B2C" stroke="#5EC8FF" stroke-width="4"/><rect x="140" y="45" width="10" height="90" rx="2" fill="#3B358F"/><rect x="155" y="45" width="10" height="90" rx="2" fill="#3B358F"/><rect x="35" y="130" width="90" height="12" rx="2" fill="#3B358F"/><g stroke="#46E0A0" stroke-width="3" fill="none"><path d="M40 45 H70 V60"/><path d="M40 60 H60 V85 H75"/><path d="M125 85 H140"/><path d="M100 110 V130"/></g></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Placa-mãe</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Liga todas as peças e faz elas conversarem entre si.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">É como o sistema nervoso: leva as mensagens do cérebro para o corpo inteiro.</span></div>
+      <div class="mount step">▶ Montagem: encaixem a placa-mãe no gabinete!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 PROCESSADOR -->
+<section class="slide" data-notes="Peça mais importante da aula! Da ministração: 'Nosso cérebro é como um processador de computador muito forte. Ele pensa, decide e dá comandos para o corpo em milésimos de segundo.'">
+  <div class="part">
+    <div class="art pulse"><span class="badge">PEÇA 3 · A MAIS IMPORTANTE</span>
+      <svg viewBox="0 0 200 200"><g stroke="#FFC940" stroke-width="5" stroke-linecap="round"><line x1="70" y1="30" x2="70" y2="45"/><line x1="100" y1="30" x2="100" y2="45"/><line x1="130" y1="30" x2="130" y2="45"/><line x1="70" y1="155" x2="70" y2="170"/><line x1="100" y1="155" x2="100" y2="170"/><line x1="130" y1="155" x2="130" y2="170"/><line x1="30" y1="70" x2="45" y2="70"/><line x1="30" y1="100" x2="45" y2="100"/><line x1="30" y1="130" x2="45" y2="130"/><line x1="155" y1="70" x2="170" y2="70"/><line x1="155" y1="100" x2="170" y2="100"/><line x1="155" y1="130" x2="170" y2="130"/></g><rect x="45" y="45" width="110" height="110" rx="12" fill="#2A2573" stroke="#FFC940" stroke-width="5"/><rect x="70" y="70" width="60" height="60" rx="6" fill="#FFC940"/><text x="100" y="108" text-anchor="middle" font-family="VT323,monospace" font-size="28" fill="#2A1E00">CPU</text></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Processador</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Pensa, calcula e decide tudo em milésimos de segundo.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">É o nosso <span class="gold">cérebro</span>! Ele pensa, decide e dá os comandos para o corpo. Ele coordena toda a nossa vida.</span></div>
+      <div class="mount step">▶ Montagem: encaixem o processador com cuidado!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 MEMÓRIA RAM -->
+<section class="slide" data-notes="'O que você está pensando agora está na sua RAM!'">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 4</span>
+      <svg viewBox="0 0 200 200"><rect x="15" y="70" width="170" height="55" rx="5" fill="#123B32" stroke="#46E0A0" stroke-width="5"/><g fill="#0D0B2C" stroke="#5EC8FF" stroke-width="3"><rect x="28" y="80" width="26" height="30" rx="2"/><rect x="62" y="80" width="26" height="30" rx="2"/><rect x="112" y="80" width="26" height="30" rx="2"/><rect x="146" y="80" width="26" height="30" rx="2"/></g><g fill="#FFC940"><rect x="22" y="125" width="6" height="12"/><rect x="34" y="125" width="6" height="12"/><rect x="46" y="125" width="6" height="12"/><rect x="58" y="125" width="6" height="12"/><rect x="70" y="125" width="6" height="12"/><rect x="82" y="125" width="6" height="12"/><rect x="110" y="125" width="6" height="12"/><rect x="122" y="125" width="6" height="12"/><rect x="134" y="125" width="6" height="12"/><rect x="146" y="125" width="6" height="12"/><rect x="158" y="125" width="6" height="12"/><rect x="170" y="125" width="6" height="12"/></g></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Memória RAM</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Guarda aquilo que o computador está fazendo <b>agora</b>.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">É aquilo que estamos pensando neste momento.</span></div>
+      <div class="mount step">▶ Montagem: encaixem a memória até fazer “clic”!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 SSD/HD -->
+<section class="slide" data-notes="'Tudo o que você vê e ouve fica salvo. Cuidado com o que você salva!' Liga com o filtro PURO mais à frente.">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 5</span>
+      <svg viewBox="0 0 200 200"><rect x="35" y="45" width="130" height="110" rx="10" fill="#2A2573" stroke="#5EC8FF" stroke-width="5"/><rect x="55" y="65" width="90" height="34" rx="4" fill="#5EC8FF"/><text x="100" y="89" text-anchor="middle" font-family="VT323,monospace" font-size="26" fill="#110F36">SSD</text><g fill="#3B358F"><rect x="55" y="115" width="40" height="8" rx="2"/><rect x="55" y="130" width="60" height="8" rx="2"/></g><circle cx="140" cy="130" r="6" fill="#46E0A0"/></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Armazenamento (SSD/HD)</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Guarda arquivos, fotos e jogos para sempre.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">Tudo que vemos e ouvimos fica guardado na mente. <span class="gold">Cuidado com o que você salva!</span></span></div>
+      <div class="mount step">▶ Montagem: conectem o SSD!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 FONTE -->
+<section class="slide" data-notes="Do Encontro 2: 'pensar nas coisas do alto inclui falar com Deus'.">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 6</span>
+      <svg viewBox="0 0 200 200"><rect x="30" y="45" width="140" height="110" rx="10" fill="#2A2573" stroke="#FFC940" stroke-width="5"/><circle cx="85" cy="100" r="36" fill="#0D0B2C" stroke="#FFC940" stroke-width="4"/><g stroke="#FFC940" stroke-width="4"><line x1="85" y1="66" x2="85" y2="134"/><line x1="51" y1="100" x2="119" y2="100"/><line x1="61" y1="76" x2="109" y2="124"/><line x1="109" y1="76" x2="61" y2="124"/></g><path d="M145 70 L132 102 H146 L136 132" fill="none" stroke="#46E0A0" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Fonte de energia</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Dá energia para todas as peças funcionarem.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">Sem energia, nada funciona. <span class="gold">Falar com Deus</span> recarrega o nosso sistema.</span></div>
+      <div class="mount step">▶ Montagem: coloquem a fonte e liguem os cabos!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 ENTRADAS -->
+<section class="slide" data-notes="'Por onde as coisas entram na nossa mente? Olhos e ouvidos! E o que sai? As palavras!'">
+  <div class="part">
+    <div class="art"><span class="badge">PEÇA 7</span>
+      <svg viewBox="0 0 200 200"><rect x="30" y="25" width="140" height="95" rx="8" fill="#0D0B2C" stroke="#5EC8FF" stroke-width="5"/><rect x="42" y="37" width="116" height="71" rx="3" fill="#15324F"/><rect x="90" y="120" width="20" height="18" fill="#3B358F"/><rect x="65" y="138" width="70" height="8" rx="3" fill="#3B358F"/><rect x="25" y="155" width="115" height="30" rx="5" fill="#2A2573" stroke="#ABA6DB" stroke-width="3"/><g fill="#3B358F"><rect x="33" y="161" width="12" height="7"/><rect x="50" y="161" width="12" height="7"/><rect x="67" y="161" width="12" height="7"/><rect x="84" y="161" width="12" height="7"/><rect x="101" y="161" width="12" height="7"/><rect x="118" y="161" width="12" height="7"/><rect x="45" y="172" width="70" height="7"/></g><rect x="150" y="155" width="24" height="34" rx="12" fill="#2A2573" stroke="#ABA6DB" stroke-width="3"/></svg>
+    </div>
+    <div class="pair">
+      <h2 class="h3">Monitor, teclado e mouse</h2>
+      <div class="pc comp step"><span class="l">NO COMPUTADOR</span><span class="x">Por onde as informações entram e saem.</span></div>
+      <div class="pc mind step"><span class="l">NA NOSSA VIDA</span><span class="x">Olhos e ouvidos: por onde as coisas <b>entram</b> na mente. Nossa boca: o que <b>sai</b> dela.</span></div>
+      <div class="mount step">▶ Montagem: conectem monitor, teclado e mouse!</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 LIGAR -->
+<section class="slide" data-boot="1" data-notes="Ligue o computador de verdade junto com o slide. Deixe as crianças fazerem a contagem: 3, 2, 1!">
+  <div class="eyebrow">Hora de ligar!</div>
+  <div class="term" id="term">
+    <div>&gt; INICIANDO SISTEMA DA MENTE...</div>
+    <div class="bar" id="bootbar"><i></i></div>
+    <div class="step">&gt; Processador (cérebro) ........ OK</div>
+    <div class="step">&gt; Memória ....................... OK</div>
+    <div class="step">&gt; Energia ....................... OK</div>
+    <div class="step e">&gt; ANTIVÍRUS ..................... NÃO ENCONTRADO ⚠<span class="blink">_</span></div>
+  </div>
+</section>
+
+<!-- 13 VÍRUS -->
+<section class="slide" data-alarm="1" data-notes="Ministração: 'Do mesmo jeito que um vírus pode invadir um computador, deixando lento ou destruindo os arquivos, nossa mente também pode ser invadida por vírus: pensamentos que destroem a autoestima e deixam a gente com raiva de tudo e de todos.'">
+  <div class="eyebrow pink">⚠ Alerta: Hacker do Pensamento detectado</div>
+  <h2 class="h2 glitch anim">Vírus da mente</h2>
+  <div class="vgrid">
+    <div class="vcard step"><span class="l">MENTIRA</span><span class="x">“Não fui eu.”</span></div>
+    <div class="vcard step"><span class="l">RAIVA</span><span class="x">“Que ódio!”</span></div>
+    <div class="vcard step"><span class="l">MEDO</span><span class="x">“Não vou conseguir.”</span></div>
+    <div class="vcard step"><span class="l">INVEJA</span><span class="x">“O dele é melhor que o meu.”</span></div>
+    <div class="vcard step"><span class="l">ORGULHO</span><span class="x">“Sou o melhor de todos.”</span></div>
+    <div class="vcard step"><span class="l">FOFOCA</span><span class="x">“Quero te contar um segredo.”</span></div>
+    <div class="vcard step"><span class="l">COMPARAÇÃO</span><span class="x">“Todo mundo é melhor que eu.”</span></div>
+    <div class="vcard step"><span class="l">XINGAMENTO</span><span class="x">“Vou zoar mesmo.”</span></div>
+  </div>
+  <p class="mid step">Quando um vírus roda na mente, <span class="pink">o jogo da vida trava</span>: brigas, confusão e tristeza.</p>
+</section>
+
+<!-- 14 PATCH DE PAULO -->
+<section class="slide center" data-notes="'Mas o programador Paulo deixou um Patch de Atualização: a carta aos Filipenses, com o código de segurança para a nossa mente.'">
+  <div class="eyebrow">Atualização disponível</div>
+  <h2 class="h2">O Patch de <span class="gold">Paulo</span></h2>
+  <p class="big step">Uma carta secreta enviada para a igreja de Filipos, com um <span class="gold">FIREWALL</span> poderoso para a mente.</p>
+  <p class="mid mute step">Firewall = um filtro, uma barreira que decide o que <b class="green">pode</b> e o que <b class="pink">não pode</b> entrar.</p>
+</section>
+
+<!-- 15 SEIS FIREWALLS -->
+<section class="slide center" data-notes="'Se qualquer pensamento nosso não passar por esses 6 filtros, quer dizer que é um vírus!'">
+  <div class="eyebrow">Filipenses 4:8 · 6 filtros de segurança</div>
+  <h2 class="h2">Os 6 Firewalls</h2>
+  <div class="fw6" id="fw6"></div>
+</section>
+
+<!-- 16-21 FIREWALLS (gerados pelo script) -->
+<div id="fwslot"></div>
+
+<!-- 22 TESTE -->
+<section class="slide" data-notes="Leia cada pensamento e deixe as crianças gritarem PASSA ou BLOQUEIA antes de revelar.">
+  <div class="eyebrow">Hora do teste</div>
+  <h2 class="h3">Isso passa no Firewall?</h2>
+  <div class="tests">
+    <div class="tcard">Contar a verdade que quebrou o copo<span class="stamp pass step">PASSA</span></div>
+    <div class="tcard">Falar mal de um colega<span class="stamp block step">BLOQUEIA</span></div>
+    <div class="tcard">Dividir o lanche com quem não tem<span class="stamp pass step">PASSA</span></div>
+    <div class="tcard">Assistir escondido algo que seus pais não podem ver<span class="stamp block step">BLOQUEIA</span></div>
+  </div>
+</section>
+
+<!-- 23 LEVEL UP -->
+<section class="slide center" data-notes="Ministração: 'Nisso pensai' quer dizer instalar os 6 Firewalls como a tela inicial do celular.">
+  <div class="eyebrow">Alcançando o Level Up</div>
+  <h2 class="h2 gold">“Nisso pensai”</h2>
+  <p class="big">Instale os 6 Firewalls como a <b>tela inicial do celular</b>!</p>
+  <p class="h3 step">“Isso é verdadeiro? <span class="pink">Não?</span> Então <span class="pink">deleta!</span>”</p>
+  <p class="h3 step">“Isso é amável? <span class="pink">Não?</span> Então <span class="pink">sai fora!</span>”</p>
+</section>
+
+<!-- 24 CONCLUSÃO -->
+<section class="slide" data-boot2="1" data-notes="Conclusão: 'Devemos escolher o que vamos permitir rodar no nosso computador.'">
+  <div class="eyebrow">Quem ganha o jogo</div>
+  <div class="term">
+    <div>&gt; INSTALANDO ANTIVÍRUS DE PAULO...</div>
+    <div class="bar" id="bootbar2"><i></i></div>
+    <div class="step">&gt; Verdadeiro · Honesto · Justo ....... OK</div>
+    <div class="step">&gt; Puro · Amável · Boa fama ........... OK</div>
+    <div class="step" style="color:var(--gold)">&gt; NOVA MENTALIDADE ATIVADA. LEVEL UP! ★</div>
+  </div>
+  <p class="mid step">Se deixarmos qualquer vírus rodar, o jogo trava. Com o antivírus de Paulo, o jogo fica <span class="gold">muito top!</span></p>
+</section>
+
+<!-- 25 DESAFIO -->
+<section class="slide center" data-notes="Peça que cada criança diga em que lugar vai usar o Firewall esta semana.">
+  <div class="eyebrow">Desafio da semana</div>
+  <h2 class="h2">Ative o Firewall!</h2>
+  <p class="big">Toda vez que um vírus chegar, diga na mente <span class="gold">Filipenses 4:8</span> e escolha pensar no que passa pelos 6 filtros.</p>
+</section>
+
+<!-- 26 ORAÇÃO -->
+<section class="slide center" data-notes="Olhos fechados, mãos na cabeça (no processador). Todos repetem juntos.">
+  <div class="eyebrow">Mãos na cabeça · no processador</div>
+  <p class="oath">Eu escolho pensar no que é <em>verdadeiro</em>, <em>honesto</em>, <em>justo</em>, <em>puro</em>, <em>amável</em> e de <em>boa fama</em>. Minha mente está atualizada para o Level Up!</p>
+</section>
+
+<div class="more" id="more" hidden>clique ▸</div>
+<div class="hud"><span class="brand">O ANTIVÍRUS DE PAULO · LEVEL 3</span><span class="cnt" id="cnt"></span></div>
+<div class="prog" id="prog"></div>
+</div></div>
+
+<div class="ctrls">
+  <button data-act="prev" aria-label="Anterior">◀</button>
+  <button data-act="next" aria-label="Próximo">▶</button>
+  <button data-act="notes">Notas (N)</button>
+  <button data-act="mute" id="mutebtn">Som: on</button>
+  <button data-act="full">Tela cheia (F)</button>
+</div>
+<div id="notes" hidden></div>
+
+<script>
+/* ---------- Firewalls: texto da ministração ---------- */
+const FW=[
+  ['Verdadeiro','verdadeiro',
+   'São as ações, atitudes, falas e coisas que são reais, que não são falsas ou mentirosas.',
+   'Não devemos dar desculpas nem inventar histórias falsas. Precisamos falar a verdade, mesmo quando achamos que vamos ficar encrencados.',
+   'Quando alguém te fizer uma pergunta, fale a verdade, sempre a verdade, custe o que custar. Assim o sistema funciona sem bugs.',
+   'Pergunte: "Qual a desculpa mais comum que a gente inventa pra não fazer a lição?"'],
+  ['Honesto','honesto',
+   'São nossas atitudes que mostram nosso bom caráter, que são admiráveis.',
+   'Não devemos roubar, trapacear no jogo ou agir querendo tirar vantagem do outro. Precisamos jogar limpo!',
+   'No jogo, ora ganhamos, ora perdemos. Se ganhar, seja grato. Se perder, reconheça que o outro foi melhor e dê os parabéns.',
+   'Pergunte: "Trapacear num jogo online é só um jogo?"'],
+  ['Justo','justo',
+   'São as atitudes e coisas corretas, onde todo mundo é tratado do mesmo jeito, sem privilegiar esse ou aquele.',
+   'Não devemos desprezar ninguém pela falta de habilidade, pela aparência ou condição social. Precisamos defender quem sofre bullying.',
+   'Proteger as pessoas mais sensíveis e que se sentem fracas. Tratar todas as pessoas com respeito e igualdade.',
+   'Pergunte: "O que você faz quando zoam alguém no grupo?"'],
+  ['Puro','puro',
+   'São as coisas limpas, inocentes, sem sujeira no coração e na mente.',
+   'Não devemos ver coisas feias na internet ou na TV. Se seus pais não podem ver, se precisa assistir escondido, não é puro.',
+   'Vamos nos esforçar para que o coração e a mente fiquem limpos, sem “lixo” de xingamentos ou maldades.',
+   'Pergunte: "Se precisa ver escondido, passa no filtro?" Cuidado pastoral: diga que, se alguém viu algo que incomodou, pode contar a um adulto sem ficar encrencado.'],
+  ['Amável','amavel',
+   'São atitudes que demonstram amor, carinho, cuidado, respeito e ajudar os outros quando precisam de nós.',
+   'Dizer bom dia, boa tarde, boa noite, pedir desculpas quando errar, ajudar os colegas na escola, abraçar o amigo que está triste.',
+   'Vamos procurar fazer coisas que deixem o dia das pessoas melhor, mais feliz.',
+   'Pergunte: "Qual atitude pequena melhora o dia de alguém?"'],
+  ['Boa fama','boafama',
+   'São nossas boas atitudes, as palavras legais que falamos, quando elogiamos as pessoas e somos gentis.',
+   'Não devemos fazer fofoca, falar mal ou inventar histórias sobre as pessoas. Não aceitar que falem de alguém sem a pessoa estar presente.',
+   'Antes de falar, pense: isso vai deixar a pessoa feliz ou triste? Se for deixar triste, não fale. Não é de boa fama.',
+   'Pergunte: "Antes de repassar uma mensagem, que pergunta a gente deve fazer?"']
+];
+const SHIELD=`<svg viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L58 13 V35 C58 52 46 63 32 69 C18 63 6 52 6 35 V13 Z" fill="#5EC8FF" stroke="#F4F1FF" stroke-width="3"/><path d="M32 12 L50 19 V35 C50 47 42 55 32 60 Z" fill="#9FE0FF"/><path d="M21 36 L29 44 L44 27" fill="none" stroke="#110F36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const IC={
+  what:`<svg viewBox="0 0 24 24" fill="none" stroke="#110F36" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>`,
+  game:`<svg viewBox="0 0 24 24" fill="none" stroke="#2A1E00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12a4 4 0 0 1 4 4v1a4 4 0 0 1-7 2.6L14 14h-4l-1 1.6A4 4 0 0 1 2 13v-1a4 4 0 0 1 4-4z"/><line x1="7" y1="10.5" x2="7" y2="13.5"/><line x1="5.5" y1="12" x2="8.5" y2="12"/><circle cx="16.5" cy="11" r=".6" fill="#2A1E00"/><circle cx="18" cy="13" r=".6" fill="#2A1E00"/></svg>`,
+  act:`<svg viewBox="0 0 24 24" fill="none" stroke="#0B2A20" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg>`
+};
+(function build(){
+  document.getElementById('fw6').innerHTML=FW.map((f,i)=>`<div class="fwc step"><span class="band">FIREWALL ${i+1}</span>${SHIELD}<b>${f[0]}</b></div>`).join('');
+  const html=FW.map((f,i)=>`
+  <section class="slide" data-notes="${f[5].replace(/"/g,'&quot;')}">
+    <div class="fwslide">
+      <div class="hero">
+        <span class="num">FIREWALL ${i+1}/6</span>
+        <div class="float">${SHIELD}</div>
+        <span class="all">Tudo o que é${f[1]==='boafama'?' de':''}</span>
+        <span class="name">${f[0].toUpperCase()}</span>
+        <div class="dots">${FW.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('')}</div>
+      </div>
+      <div class="three">
+        <div class="box what step"><span class="ic">${IC.what}</span><span class="l">O que é</span><span class="x">${f[2]}</span></div>
+        <div class="box game step"><span class="ic">${IC.game}</span><span class="l">No jogo</span><span class="x">${f[3]}</span></div>
+        <div class="box act step"><span class="ic">${IC.act}</span><span class="l">Ação</span><span class="x">${f[4]}</span></div>
+      </div>
+    </div>
+  </section>`).join('');
+  document.getElementById('fwslot').outerHTML=html;
+})();
+
+/* ---------- Motor da apresentação ---------- */
+const $=s=>document.querySelector(s);
+const slides=[...document.querySelectorAll('.slide')];
+let idx=0,step=0,muted=false;
+let AC;
+function beep(f,d=.12,type='square',when=0,vol=.06){if(muted)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime+when,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
+const SFX={
+  step(){beep(880,.05,'triangle',0,.05)},
+  slide(){beep(520,.06,'square',0,.04);beep(780,.06,'square',.05,.04)},
+  up(){[392,523,659,784,1047,1319].forEach((f,i)=>beep(f,.13,'triangle',i*.07,.08))},
+  alarm(){for(let i=0;i<3;i++){beep(880,.14,'square',i*.3);beep(620,.14,'square',i*.3+.15)}},
+  boot(){[200,300,450,700,1000].forEach((f,i)=>beep(f,.12,'sine',i*.12,.07))},
+  bad(){beep(180,.35,'sawtooth',0,.06)}
+};
+const steps=s=>[...s.querySelectorAll('.step')];
+const extra=s=>s.dataset.unlock?1:0; // slide do cadeado tem um passo a mais
+
+function fit(){
+  const st=$('#stage'),w=innerWidth,h=innerHeight;
+  st.style.transform=`scale(${Math.min(w/1600,h/900)})`;
+}
+function show(i,st,dir){
+  idx=Math.max(0,Math.min(slides.length-1,i));
+  const s=slides[idx],list=steps(s),total=list.length+extra(s);
+  step=st==='all'?total:Math.max(0,Math.min(total,st));
+  slides.forEach(x=>x.classList.remove('on','enter'));
+  s.classList.add('on');
+  if(dir){void s.offsetWidth;s.classList.add('enter');SFX.slide()}
+  list.forEach((el,k)=>el.classList.toggle('shown',k<step));
+  // efeitos especiais
+  if(s.dataset.unlock) setLock(step>=1);
+  if(dir&&s.dataset.alarm) SFX.alarm();
+  if(s.dataset.boot) runBar('#bootbar',dir);
+  if(s.dataset.boot2) runBar('#bootbar2',dir);
+  $('#cnt').textContent=`${idx+1} / ${slides.length}`;
+  $('#prog').style.width=`${(idx+1)/slides.length*100}%`;
+  $('#more').hidden=step>=total;
+  const n=$('#notes');n.innerHTML=`<b>NOTAS DO GAME MASTER · SLIDE ${idx+1}</b>${s.dataset.notes||'Sem notas.'}`;
+  try{history.replaceState(null,'','#'+(idx+1))}catch(e){}
+}
+function setLock(open){
+  const c=$('#lock3');if(!c)return;
+  c.classList.toggle('unlocked',open);
+  $('#lock3t').textContent=open?'🔓 Nova Mentalidade':'🔒 Bloqueado';
+  $('#lock3v').textContent=open?'Filipenses 4:8':'Clique para destravar';
+}
+function runBar(sel,animate){
+  const b=$(sel);if(!b)return;b.classList.remove('go');
+  if(animate){SFX.boot();void b.offsetWidth;setTimeout(()=>b.classList.add('go'),60)}else b.classList.add('go');
+}
+function next(){
+  const s=slides[idx],total=steps(s).length+extra(s);
+  if(step<total){
+    step++;
+    if(s.dataset.unlock&&step===1){setLock(true);SFX.up()}
+    else{
+      const el=steps(s)[step-1-extra(s)];
+      if(el){el.classList.add('shown');
+        if(el.classList.contains('e')||el.classList.contains('block'))SFX.bad();
+        else if(el.classList.contains('fwc')||el.classList.contains('act')||el.classList.contains('pass'))SFX.up();
+        else SFX.step()}
+    }
+    $('#more').hidden=step>=total;return;
+  }
+  if(idx<slides.length-1) show(idx+1,0,1);
+}
+function prev(){
+  const s=slides[idx];
+  if(step>0){step--;
+    if(s.dataset.unlock&&step===0) setLock(false);
+    else{const el=steps(s)[step-extra(s)];if(el)el.classList.remove('shown')}
+    $('#more').hidden=false;return}
+  if(idx>0) show(idx-1,'all',-1);
+}
+function toggleFull(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}}
+
+document.addEventListener('keydown',e=>{
+  const k=e.key;
+  if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(k)){e.preventDefault();next()}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){e.preventDefault();prev()}
+  else if(k==='Home')show(0,0,1);
+  else if(k==='End')show(slides.length-1,'all',1);
+  else if(k==='n'||k==='N')$('#notes').hidden=!$('#notes').hidden;
+  else if(k==='f'||k==='F')toggleFull();
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');
+  if(b){const a=b.dataset.act;
+    if(a==='next')next();else if(a==='prev')prev();
+    else if(a==='notes')$('#notes').hidden=!$('#notes').hidden;
+    else if(a==='full')toggleFull();
+    else if(a==='mute'){muted=!muted;b.textContent=muted?'Som: off':'Som: on'}
+    return}
+  if(e.target.closest('#notes,a'))return;
+  // clique no palco: metade esquerda volta, resto avança
+  (e.clientX<innerWidth*0.25)?prev():next();
+});
+addEventListener('resize',fit);
+
+function start(data){
+  fit();
+  const h=parseInt((location.hash||'').slice(1),10);
+  if(data&&data.idx!=null) show(data.idx,data.step,0);
+  else show(h>0?h-1:0,0,0);
+}
+window.claude?.hot?.snapshot?.(()=>({idx,step}));
+window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+</script>
+
+<a class="home-link" href="index.html" aria-label="Voltar para a página inicial">⌂ Início</a>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Level UP · Cartas de Paulo</title>
+<meta name="description" content="Apresentação e jogos do Especial Bíblico de Férias Level UP: Destravando as Cartas de Paulo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;700;800;900&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#110F36; --bg2:#19164B; --panel:#211D5E; --panel2:#2A2573; --line:#3B358F;
+  --ink:#F4F1FF; --mute:#ABA6DB;
+  --gold:#FFC940; --gold-ink:#2A1E00;
+  --virus:#FF4F8B; --sky:#5EC8FF; --ok:#46E0A0;
+  --display:'Bungee','Arial Black',Impact,system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'VT323',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background-color:var(--bg);
+  background-image:linear-gradient(rgba(94,200,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(94,200,255,.06) 1px,transparent 1px);
+  background-size:40px 40px;color:var(--ink);font-family:var(--body);font-weight:700;font-size:17px;
+  padding:env(safe-area-inset-top,0px) 16px env(safe-area-inset-bottom,0px)}
+a{color:inherit}
+a:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding-block:40px 60px;display:flex;flex-direction:column;gap:44px}
+
+header{display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-family:var(--mono);font-size:24px;letter-spacing:.08em;color:var(--sky);text-transform:uppercase}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:.95;margin:0;text-shadow:3px 0 var(--virus),-3px 0 var(--sky);text-wrap:balance}
+.lead{max-width:62ch;color:var(--mute);font-size:clamp(17px,1.8vw,20px);line-height:1.5;margin:0}
+
+.enc{display:flex;flex-direction:column;gap:22px}
+.enc-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:12px}
+.enc-head h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,3.4vw,38px);margin:0}
+.enc-head .v{font-family:var(--mono);font-size:24px;color:var(--gold)}
+.enc-head .lv{font-family:var(--mono);font-size:22px;color:var(--bg);background:var(--sky);padding:2px 10px;border-radius:6px}
+
+.feature{display:grid;grid-template-columns:1.1fr 1fr;gap:0;background:var(--panel);border:3px solid var(--gold);border-radius:20px;overflow:hidden;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.feature:hover{transform:translateY(-4px);box-shadow:0 12px 0 #0B0A26,0 0 40px rgba(255,201,64,.25)}
+.feature .pv{background:radial-gradient(circle at 40% 40%,rgba(94,200,255,.22),transparent 65%),#0D0B2C;display:grid;place-items:center;padding:28px;min-height:230px}
+.feature .pv .mini{font-family:var(--display);font-size:clamp(26px,3.4vw,40px);line-height:1;text-align:center;text-shadow:3px 0 var(--virus),-3px 0 var(--sky)}
+.feature .pv .mini small{display:block;font-family:var(--mono);font-size:22px;color:var(--sky);text-shadow:none;margin-top:10px}
+.feature .tx{padding:26px 28px;display:flex;flex-direction:column;gap:10px}
+.tag{font-family:var(--mono);font-size:20px;letter-spacing:.08em;color:var(--gold)}
+.feature h3,.card h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.6vw,30px);margin:0;line-height:1.05}
+.tx p,.card p{margin:0;color:var(--mute);line-height:1.5}
+.go{margin-top:auto;font-family:var(--display);font-size:17px;color:var(--gold-ink);background:var(--gold);border-radius:10px;padding:10px 16px;align-self:flex-start;box-shadow:0 4px 0 #B7861A}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--panel);border:3px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;text-decoration:none;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-4px);border-color:var(--sky)}
+.card .ic{width:58px;height:58px;border-radius:14px;display:grid;place-items:center;background:var(--bg2);border:2px solid var(--line)}
+.card .ic svg{width:34px;height:34px}
+.card .meta{font-family:var(--mono);font-size:19px;color:var(--sky)}
+.card .go{font-size:15px;padding:8px 14px}
+
+.plan{background:var(--bg2);border:2px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.plan h3{font-family:var(--display);font-weight:400;font-size:24px;margin:0}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps li{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:baseline;border-bottom:1px dashed var(--line);padding-bottom:10px}
+.steps li:last-child{border-bottom:0;padding-bottom:0}
+.steps .t{font-family:var(--mono);font-size:22px;color:var(--gold);font-variant-numeric:tabular-nums}
+.steps .d{line-height:1.45}
+.steps .d a{color:var(--sky)}
+
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tip{border-left:4px solid var(--sky);padding:4px 0 4px 14px;color:var(--mute);line-height:1.45;font-size:16px}
+.tip b{color:var(--ink);display:block;margin-bottom:2px}
+kbd{font-family:var(--mono);font-size:18px;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:0 6px;color:var(--ink)}
+
+footer{color:var(--mute);font-size:15px;text-align:center;border-top:2px solid var(--line);padding-top:18px}
+footer em{font-style:normal;color:var(--gold)}
+
+@media (max-width:860px){
+  .feature{grid-template-columns:1fr}
+  .cards,.tips{grid-template-columns:1fr}
+  .steps li{grid-template-columns:1fr;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){.feature,.card{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">· 9 a 12 anos</div>
+    <h1>Level UP<br>Cartas de Paulo</h1>
+    <p class="lead">Apresentações e jogos para projetar nos encontros. Abra no computador ligado ao projetor, deixe em tela cheia e jogue em times.</p>
+  </header>
+
+  <section class="enc" aria-labelledby="enc3">
+    <div class="enc-head">
+      <span class="lv">LEVEL 3</span>
+      <h2 id="enc3">Nova Mentalidade</h2>
+      <span class="v">Filipenses 4:8</span>
+    </div>
+
+    <a class="feature" href="apresentacao.html">
+      <div class="pv"><div class="mini">O Antivírus<br>de Paulo<small>26 slides · montagem do computador</small></div></div>
+      <div class="tx">
+        <span class="tag">APRESENTAÇÃO DA AULA</span>
+        <h3>O Antivírus de Paulo</h3>
+        <p>Montagem do computador peça por peça, os vírus da mente e os 6 Firewalls com <b>O que é</b>, <b>No jogo</b> e <b>Ação</b>. Cada clique revela o próximo item.</p>
+        <span class="go">Abrir apresentação →</span>
+      </div>
+    </a>
+
+    <div class="cards">
+      <a class="card" href="hacker-do-pensamento.html">
+        <span class="ic"><svg viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L58 13 V35 C58 52 46 63 32 69 C18 63 6 52 6 35 V13 Z" fill="#FF4F8B" stroke="#F4F1FF" stroke-width="4"/><path d="M22 25 L42 45 M42 25 L22 45" stroke="#110F36" stroke-width="7" stroke-linecap="round"/></svg></span>
+        <span class="meta">JOGO 1 · CARTAS · 3 MISSÕES</span>
+        <h3>Hacker do Pensamento</h3>
+        <p>Vírus aparece, o time escolhe o Firewall. Depois: passa ou bloqueia, e montar o código de Fp 4:8.</p>
+        <span class="go">Jogar →</span>
+      </a>
+      <a class="card" href="defesa-da-mente.html">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FFC940" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/></svg></span>
+        <span class="meta">JOGO 2 · ARCADE · FÁCIL E DIFÍCIL</span>
+        <h3>Defesa da Mente</h3>
+        <p>Pensamentos caem na tela. Clique nos vírus e deixe os Firewalls entrarem no processador.</p>
+        <span class="go">Jogar →</span>
+      </a>
+      <a class="card" href="trilha-do-firewall.html">
+        <span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="#F4F1FF"/><circle cx="8" cy="8" r="1.8" fill="#110F36"/><circle cx="16" cy="16" r="1.8" fill="#110F36"/><circle cx="12" cy="12" r="1.8" fill="#110F36"/></svg></span>
+        <span class="meta">JOGO 3 · TABULEIRO · DADO</span>
+        <h3>Trilha do Firewall</h3>
+        <p>Os times rolam o dado e percorrem a trilha com desafios, ataques de vírus e os 6 Firewalls.</p>
+        <span class="go">Jogar →</span>
+      </a>
+    </div>
+
+    <div class="plan">
+      <h3>Roteiro sugerido do encontro</h3>
+      <ol class="steps">
+        <li><span class="t">0–5 min</span><span class="d">Login e recap dos Levels 1 e 2 (slides 1–3 da <a href="apresentacao.html">apresentação</a>).</span></li>
+        <li><span class="t">5–25 min</span><span class="d"><a href="hacker-do-pensamento.html">Hacker do Pensamento</a>, Missão 1: Invasão do Hacker.</span></li>
+        <li><span class="t">25–50 min</span><span class="d"><a href="apresentacao.html#4">Apresentação</a>: montagem do computador e os 6 Firewalls.</span></li>
+        <li><span class="t">50–65 min</span><span class="d">Hacker do Pensamento, Missões 2 e 3. Ou a <a href="trilha-do-firewall.html">Trilha do Firewall</a>.</span></li>
+        <li><span class="t">65–75 min</span><span class="d">Desafio da semana e oração (últimos slides). Sobrou tempo? <a href="defesa-da-mente.html">Defesa da Mente</a>!</span></li>
+      </ol>
+    </div>
+
+    <div class="tips">
+      <div class="tip"><b>Tela cheia</b>Aperte <kbd>F11</kbd> no Windows ou <kbd>Ctrl</kbd><kbd>⌘</kbd><kbd>F</kbd> no Mac. Na apresentação, <kbd>F</kbd>.</div>
+      <div class="tip"><b>Pausar</b>Nos jogos, <kbd>espaço</kbd> pausa o relógio. Na apresentação, <kbd>→</kbd> avança e <kbd>N</kbd> mostra as notas.</div>
+      <div class="tip"><b>Não recarregue</b>Recarregar a página zera o placar. Para recomeçar, use o botão <b>↺ Reiniciar</b>.</div>
+    </div>
+  </section>
+
+  <footer>“Pensai nas coisas que são de cima.” <em>Colossenses 3:2</em></footer>
+</div>
+</body>
+</html>

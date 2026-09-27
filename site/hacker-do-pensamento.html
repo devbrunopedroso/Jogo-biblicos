@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.home-link{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;
+  font:400 20px 'VT323',ui-monospace,Menlo,monospace;color:#F4F1FF;background:rgba(17,15,54,.9);
+  border:2px solid #3B358F;border-radius:10px;padding:4px 12px;text-decoration:none;opacity:.55}
+.home-link:hover,.home-link:focus-visible{opacity:1;border-color:#5EC8FF}</style>
+</head>
+<body>
+<title>Hacker do Pensamento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;700;800;900&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#110F36; --bg2:#19164B; --panel:#211D5E; --panel2:#2A2573; --line:#3B358F;
+  --ink:#F4F1FF; --mute:#ABA6DB;
+  --gold:#FFC940; --gold-ink:#2A1E00;
+  --virus:#FF4F8B; --sky:#5EC8FF; --ok:#46E0A0;
+  --display:'Bungee','Arial Black',Impact,system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'VT323',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(94,200,255,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(94,200,255,.06) 1px,transparent 1px);
+  background-size:40px 40px;
+  color:var(--ink); font-family:var(--body); font-weight:700; font-size:17px;
+}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+#app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;padding-inline:16px;max-width:1280px;margin:0 auto}
+
+/* top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:18px;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+.brand small{font-family:var(--mono);font-size:20px;color:var(--sky);letter-spacing:.04em}
+.tools{display:flex;gap:8px}
+.tbtn{font-family:var(--mono);font-size:20px;padding:4px 12px;border:2px solid var(--line);border-radius:8px;color:var(--mute)}
+.tbtn:hover{color:var(--ink);border-color:var(--sky)}
+
+main{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding-block:18px 26px}
+
+/* type */
+.eyebrow{font-family:var(--mono);font-size:24px;letter-spacing:.08em;color:var(--sky);text-transform:uppercase}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(38px,7.5vw,92px);line-height:.95;margin:0;text-align:center;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,44px);line-height:1.05;margin:0;text-align:center;text-wrap:balance}
+.lead{max-width:62ch;text-align:center;color:var(--mute);font-size:clamp(17px,1.8vw,21px);line-height:1.5;margin:0}
+.glitch{position:relative;color:var(--ink);text-shadow:3px 0 var(--virus),-3px 0 var(--sky)}
+@media (prefers-reduced-motion:no-preference){
+  .glitch{animation:glitch 2.4s infinite steps(1)}
+  @keyframes glitch{0%,86%,100%{text-shadow:3px 0 var(--virus),-3px 0 var(--sky);transform:none}
+    88%{text-shadow:-6px 0 var(--virus),6px 0 var(--sky);transform:translateX(3px) skewX(-6deg)}
+    91%{text-shadow:6px 2px var(--virus),-6px -2px var(--sky);transform:translateX(-4px)}
+    94%{text-shadow:2px 0 var(--virus),-2px 0 var(--sky);transform:none}}
+  .shake{animation:shake .4s}
+  @keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+  .pop{animation:pop .35s ease-out}
+  @keyframes pop{from{transform:scale(.85);opacity:.3}to{transform:none;opacity:1}}
+}
+
+/* buttons */
+.btn{font-family:var(--display);font-size:clamp(17px,2vw,22px);padding:14px 26px;border-radius:12px;background:var(--gold);color:var(--gold-ink);box-shadow:0 5px 0 #B7861A;transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #B7861A}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--sky)}
+.btn.small{font-size:15px;padding:9px 16px}
+.row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* setup */
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;width:100%;max-width:1000px}
+.tcard{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px}
+.av{width:56px;height:56px;flex:none;border-radius:12px;display:grid;place-items:center;font-size:32px;border:3px solid currentColor;background:var(--bg2)}
+.tcard input{width:100%;min-width:0;background:var(--bg2);border:2px solid var(--line);border-radius:8px;color:var(--ink);font:inherit;font-size:18px;padding:8px 10px}
+.seg{display:flex;border:2px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{padding:8px 16px;font-family:var(--mono);font-size:22px;color:var(--mute)}
+.seg button[aria-pressed="true"]{background:var(--sky);color:var(--bg)}
+
+/* hub */
+.missions{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:1100px}
+.mission{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:22px;text-align:left;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,transform .15s}
+.mission:hover{border-color:var(--gold);transform:translateY(-3px)}
+.mission .num{font-family:var(--mono);font-size:22px;color:var(--sky)}
+.mission h3{font-family:var(--display);font-weight:400;font-size:24px;margin:0;line-height:1.1}
+.mission p{margin:0;color:var(--mute);line-height:1.45;font-size:16px}
+.mission .st{margin-top:auto;font-family:var(--mono);font-size:20px;color:var(--gold)}
+.mission.done .st{color:var(--ok)}
+
+/* game */
+.meta{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:1000px;gap:12px;flex-wrap:wrap}
+.turn{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(18px,2.4vw,26px)}
+.turn .av{width:46px;height:46px;font-size:26px}
+.count{font-family:var(--mono);font-size:24px;color:var(--mute)}
+.timer{width:100%;max-width:1000px;height:12px;background:var(--bg2);border:2px solid var(--line);border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--sky);transform-origin:left;transition:background .3s}
+.timer i.low{background:var(--virus)}
+
+.card{width:100%;max-width:1000px;border-radius:18px;padding:clamp(20px,3vw,34px);text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.card.virus{background:repeating-linear-gradient(-45deg,#2B1250 0 14px,#2F1357 14px 28px);border:3px solid var(--virus)}
+.card.sit{background:var(--panel);border:3px solid var(--sky)}
+.card .tag{font-family:var(--mono);font-size:26px;letter-spacing:.08em;text-transform:uppercase}
+.card.virus .tag{color:var(--virus)}
+.card.sit .tag{color:var(--sky)}
+.card .quote{font-family:var(--display);font-size:clamp(28px,5vw,58px);line-height:1.05;text-wrap:balance}
+.card.sit .quote{font-family:var(--body);font-weight:900;font-size:clamp(26px,4vw,46px);line-height:1.15}
+.hint{color:var(--mute);text-align:center;margin:0;font-size:18px}
+
+.opts{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;width:100%;max-width:1100px}
+@media (max-width:1050px){.opts{grid-template-columns:repeat(3,1fr)}.opt{aspect-ratio:auto;min-height:190px}}
+.opt{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
+  aspect-ratio:3/4;padding:0 0 16px;border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,#2C2680 0%,var(--panel) 55%,#1A1650 100%);
+  border:4px solid var(--gold);box-shadow:0 8px 0 #0B0A26,inset 0 0 0 3px #1A1650,inset 0 0 0 5px rgba(255,201,64,.35);
+  transition:transform .18s,box-shadow .18s,border-color .18s,opacity .2s}
+.opt:hover:not(:disabled){transform:translateY(-8px) rotate(-1deg);box-shadow:0 16px 0 #0B0A26,0 0 30px rgba(255,201,64,.35),inset 0 0 0 3px #1A1650,inset 0 0 0 5px rgba(255,201,64,.35)}
+.opt .band{width:100%;padding:8px 10px;background:var(--gold);color:var(--gold-ink);font-family:var(--mono);font-size:22px;letter-spacing:.14em;display:flex;justify-content:space-between;align-items:center}
+.opt .k{font-family:var(--display);font-size:18px;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--gold-ink);color:var(--gold);letter-spacing:0}
+.opt .shield{width:clamp(48px,6vw,68px);height:auto;margin-top:6px;filter:drop-shadow(0 0 10px rgba(94,200,255,.45))}
+.opt b{font-family:var(--display);font-weight:400;font-size:clamp(16px,1.9vw,21px);color:var(--gold);line-height:1.05;padding-inline:10px;text-wrap:balance}
+.opt .ph{font-size:clamp(14px,1.45vw,17px);line-height:1.3;padding-inline:12px;color:var(--ink);margin-top:auto;margin-bottom:auto}
+.opt.right{border-color:var(--ok);transform:translateY(-10px) scale(1.04);box-shadow:0 0 0 4px rgba(70,224,160,.3),0 0 40px rgba(70,224,160,.45)}
+.opt.right .band{background:var(--ok)}
+.opt.right b{color:var(--ok)}
+.opt.wrong{border-color:var(--virus);filter:grayscale(.3)}
+.opt.wrong .band{background:var(--virus);color:#2D0616}
+.opt:disabled{cursor:default}
+.opt.dim{opacity:.35;transform:scale(.96)}
+@media (prefers-reduced-motion:no-preference){
+  .opt.deal{animation:deal .45s cubic-bezier(.2,.9,.3,1.2) backwards}
+  @keyframes deal{from{transform:translateY(60px) rotate(8deg) scale(.8);opacity:0}to{transform:none;opacity:1}}
+}
+
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:100%;max-width:600px}
+.choice .opt{aspect-ratio:4/5}
+.choice .opt b{font-size:clamp(24px,3.2vw,36px)}
+.opt.dblock{border-color:var(--virus);box-shadow:0 8px 0 #0B0A26,inset 0 0 0 3px #1A1650,inset 0 0 0 5px rgba(255,79,139,.35)}
+.opt.dblock .band{background:var(--virus);color:#2D0616}
+.opt.dblock b{color:var(--virus)}
+.opt.dblock .k{background:#2D0616;color:var(--virus)}
+.opt.dblock .shield{filter:drop-shadow(0 0 10px rgba(255,79,139,.5))}
+.opt.dblock:hover:not(:disabled){box-shadow:0 16px 0 #0B0A26,0 0 30px rgba(255,79,139,.4),inset 0 0 0 3px #1A1650,inset 0 0 0 5px rgba(255,79,139,.35)}
+
+.feedback{width:100%;max-width:1000px;border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.feedback.ok{background:#12393F;border:3px solid var(--ok)}
+.feedback.bad{background:#3A1238;border:3px solid var(--virus)}
+.feedback h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,3vw,32px);margin:0}
+.feedback.ok h3{color:var(--ok)}
+.feedback.bad h3{color:var(--virus)}
+.feedback p{margin:0;max-width:65ch;line-height:1.5;font-size:18px}
+.pts{font-family:var(--mono);font-size:30px;color:var(--gold)}
+
+/* verse */
+.verse{max-width:1000px;width:100%;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:22px;font-size:clamp(18px,2.2vw,26px);line-height:1.9;text-align:center}
+.slot{display:inline-block;min-width:7.5em;border-bottom:3px dashed var(--sky);margin-inline:4px;font-family:var(--display);font-size:.85em;color:var(--ok);line-height:1.3}
+.slot.next{border-bottom-color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1000px}
+.chip{font-family:var(--display);font-size:clamp(18px,2.4vw,26px);padding:14px 22px;border-radius:12px;background:var(--gold);color:var(--gold-ink);box-shadow:0 5px 0 #B7861A}
+.chip:disabled{visibility:hidden}
+
+/* ranking */
+.rank{display:flex;flex-direction:column;gap:12px;width:100%;max-width:760px}
+.rk{display:grid;grid-template-columns:52px auto 1fr auto;align-items:center;gap:14px;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:12px 18px}
+.rk.first{border-color:var(--gold);background:#2E2660}
+.rk .pos{font-family:var(--display);font-size:28px;color:var(--mute)}
+.rk.first .pos{color:var(--gold)}
+.rk .nm{font-family:var(--display);font-size:22px}
+.rk .nm small{display:block;font-family:var(--mono);font-size:20px;color:var(--sky)}
+.rk .sc{font-family:var(--mono);font-size:34px;color:var(--gold);font-variant-numeric:tabular-nums}
+
+.oath{font-family:var(--display);font-size:clamp(26px,4.4vw,52px);line-height:1.2;text-align:center;max-width:22ch;text-wrap:balance}
+.oath em{font-style:normal;color:var(--gold)}
+
+/* scoreboard */
+.board{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:10px;padding-block:12px 16px;border-top:2px solid var(--line)}
+.team{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;border:2px solid transparent;min-width:0}
+.team.active{border-color:currentColor;background:var(--bg2)}
+.team .av{width:42px;height:42px;font-size:24px;border-width:2px}
+.team .info{min-width:0;flex:1}
+.team .n{font-weight:900;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.team .s{font-family:var(--mono);font-size:28px;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+.team .s small{font-size:18px;color:var(--sky);margin-left:6px}
+.adj{display:flex;flex-direction:column;gap:2px}
+.adj button{font-family:var(--mono);font-size:18px;width:26px;height:22px;border-radius:6px;background:var(--panel);color:var(--mute);line-height:1}
+.adj button:hover{color:var(--ink)}
+
+.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(10,8,40,.82);padding:16px;backdrop-filter:blur(3px)}
+.overlay .box{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.overlay .big-t{font-family:var(--display);font-size:clamp(40px,8vw,96px);line-height:1}
+.overlay .big-t.time{color:var(--virus)}
+.overlay .big-t.pause{color:var(--sky)}
+.pbtn{font-family:var(--mono);font-size:22px;padding:4px 14px;border:2px solid var(--sky);border-radius:8px;color:var(--sky)}
+.pbtn:hover{background:var(--sky);color:var(--bg)}
+.toast{position:fixed;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--gold);color:var(--gold-ink);font-family:var(--display);font-size:clamp(18px,2.4vw,26px);padding:14px 26px;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.4);z-index:10;text-align:center;max-width:calc(100% - 32px)}
+
+@media (max-width:760px){
+  .missions{grid-template-columns:1fr}
+  .choice{grid-template-columns:1fr}
+  .opts{grid-template-columns:1fr 1fr}
+  .opt{aspect-ratio:auto;min-height:180px}
+  .board{grid-template-columns:1fr 1fr}
+  .rk{grid-template-columns:40px auto 1fr auto;padding:10px 12px}
+}
+</style>
+
+<div id="app"></div>
+<div id="toast" class="toast" hidden></div>
+<div id="overlay" class="overlay" hidden>
+  <div class="box">
+    <div id="ov-title" class="big-t"></div>
+    <p id="ov-text" class="lead"></p>
+    <button class="btn" id="ov-go" data-act="resume">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ---------- Conteúdo ---------- */
+const FILTERS = {verdadeiro:'Verdadeiro',honesto:'Honesto',justo:'Justo',puro:'Puro',amavel:'Amável',boafama:'Boa fama'};
+const FORDER = ['verdadeiro','honesto','justo','puro','amavel','boafama'];
+const FWDESC = {
+  verdadeiro:'Real, sem mentira nem desculpa',
+  honesto:'Jogar limpo, bom caráter',
+  justo:'Todos tratados do mesmo jeito',
+  puro:'Mente e coração limpos',
+  amavel:'Amor, carinho e cuidado',
+  boafama:'Palavras boas, sem fofoca'
+};
+const VIRUS = [
+  ['Mentira','Não fui eu.',['verdadeiro']],
+  ['Mentira','Ninguém está vendo.',['honesto','verdadeiro']],
+  ['Raiva','Que ódio!',['amavel','puro']],
+  ['Raiva','Vou acabar com ele!',['amavel','justo']],
+  ['Medo','E se não der certo?',['verdadeiro']],
+  ['Medo','Não vou conseguir.',['verdadeiro']],
+  ['Inveja','Por que minha vida é assim?',['puro','verdadeiro']],
+  ['Inveja','O dele é melhor que o meu.',['puro','amavel']],
+  ['Desrespeito','Falo mesmo.',['amavel','boafama']],
+  ['Xingamento','Vou zoar mesmo.',['puro','justo']],
+  ['Orgulho','Sou o melhor de todos.',['honesto','justo']],
+  ['Teimosia','Eu estou certo e pronto.',['honesto']],
+  ['Tristeza','Tudo dá sempre errado pra mim.',['verdadeiro']],
+  ['Tristeza','Ninguém quer brincar comigo.',['verdadeiro']],
+  ['Preocupação','E se algo ruim acontecer?',['verdadeiro']],
+  ['Acusação','É tudo culpa sua!',['justo','verdadeiro']],
+  ['Autoacusação','Eu não presto, não faço nada certo.',['verdadeiro']],
+  ['Comparação','Todo mundo é melhor que eu.',['verdadeiro']],
+  ['Ciúmes','Não quero ninguém perto da minha mãe.',['amavel','justo']],
+  ['Impaciência','Que demora, quero isso agora!',['amavel']],
+  ['Fofoca','Quero te contar um segredo.',['boafama']],
+  ['Desrespeito','Sai daqui, para de encher.',['amavel']],
+  ['Desânimo','Por que minha vida é tão difícil?',['verdadeiro']],
+  ['Vontade de brigar','Quero ver quem vai me parar!',['amavel','justo']]
+];
+const SIT = [
+  ['Falar mal de um colega',false,['boafama','amavel'],'Boa fama: não devemos falar mal das pessoas nem aceitar que falem de alguém sem a pessoa estar presente.'],
+  ['Ajudar alguém que caiu',true,['amavel'],'Amável: ajudar os outros quando precisam de nós. Isso deixa o dia das pessoas melhor!'],
+  ['Inventar uma mentira',false,['verdadeiro'],'Verdadeiro: não devemos dar desculpas nem inventar histórias falsas. Fale a verdade, sempre!'],
+  ['Agradecer a Deus pela família',true,['amavel','puro'],'Gratidão deixa o coração limpo. "Se há algum louvor, nisso pensai!"'],
+  ['Desejar o mal a alguém',false,['amavel','puro'],'Puro e Amável: desejar o mal deixa sujeira no coração e na mente.'],
+  ['Compartilhar um brinquedo',true,['amavel','justo'],'Amável: se importar com os outros. Justo: todo mundo tratado do mesmo jeito.'],
+  ['Mentir que a lição foi feita',false,['verdadeiro','honesto'],'Verdadeiro: falar a verdade mesmo quando achamos que vamos ficar encrencados.'],
+  ['Dar um abraço na mãe',true,['amavel'],'Amável: atitudes que demonstram amor, carinho e cuidado.'],
+  ['Pegar dinheiro escondido',false,['honesto','justo'],'Honesto: não devemos roubar nem agir querendo tirar vantagem. Jogue limpo!'],
+  ['Ajudar a lavar a louça',true,['amavel'],'Amável: ajudar quando precisam de nós e deixar o dia das pessoas melhor.'],
+  ['Contar a verdade que quebrou o copo',true,['verdadeiro','honesto'],'Verdadeiro: quando falamos a verdade, nosso sistema funciona sem bugs.'],
+  ['Dividir o lanche com quem não tem',true,['amavel','justo'],'Amável e Justo: cuidar de quem precisa e tratar todos com igualdade.'],
+  ['Trapacear no jogo para ganhar',false,['honesto'],'Honesto: não devemos trapacear no jogo. Precisamos jogar limpo!'],
+  ['Dar os parabéns a quem ganhou de você',true,['honesto'],'Honesto: às vezes ganhamos, às vezes perdemos. Reconhecer que o outro foi melhor é bom caráter.'],
+  ['Deixar um colega de fora por causa da aparência',false,['justo'],'Justo: não devemos desprezar ninguém pela aparência, habilidade ou condição social.'],
+  ['Defender um colega que sofre bullying',true,['justo'],'Justo: proteger as pessoas mais sensíveis e tratar todos com respeito e igualdade.'],
+  ['Assistir escondido algo que seus pais não podem ver',false,['puro'],'Puro: se precisa assistir escondido, não é puro. Isso traz vírus para a mente.'],
+  ['Pedir desculpas quando errar',true,['amavel'],'Amável: pedir desculpas quando erramos mostra amor e respeito.'],
+  ['Inventar uma história sobre outra pessoa',false,['boafama','verdadeiro'],'Boa fama: não devemos fazer fofoca nem inventar histórias sobre as pessoas.'],
+  ['Elogiar um colega',true,['boafama','amavel'],'Boa fama: palavras legais e elogios fazem a pessoa ficar feliz.']
+];
+const AVATARS = ['🛡️','🚀','⚡','🦁','🤖','🦅','🐉','👾','🔥','⭐'];
+const COLORS = ['#5EC8FF','#FFC940','#46E0A0','#FF8A5C'];
+const LVL = 40;
+const BUG = `<svg class="shield" viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L58 13 V35 C58 52 46 63 32 69 C18 63 6 52 6 35 V13 Z" fill="#FF4F8B" stroke="#F4F1FF" stroke-width="3"/><path d="M22 25 L42 45 M42 25 L22 45" stroke="#110F36" stroke-width="7" stroke-linecap="round"/></svg>`;
+const SHIELD = `<svg class="shield" viewBox="0 0 64 72" aria-hidden="true"><path d="M32 3 L58 13 V35 C58 52 46 63 32 69 C18 63 6 52 6 35 V13 Z" fill="#5EC8FF" stroke="#F4F1FF" stroke-width="3"/><path d="M32 12 L50 19 V35 C50 47 42 55 32 60 Z" fill="#9FE0FF"/><path d="M21 36 L29 44 L44 27" fill="none" stroke="#110F36" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/* ---------- Estado ---------- */
+let S = {
+  screen:'setup', n:4, muted:false, secs:45,
+  teams:[
+    {name:'Time Azul',av:0,score:0},{name:'Time Dourado',av:1,score:0},
+    {name:'Time Verde',av:2,score:0},{name:'Time Laranja',av:3,score:0}
+  ],
+  done:{1:false,2:false,3:false},
+  turn:0, q:null, p1:null, p2:null, p3:null
+};
+
+/* ---------- Utilidades ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const teams = () => S.teams.slice(0,S.n);
+const lvl = sc => 1+Math.floor(Math.max(0,sc)/LVL);
+const avHTML = (i,t) => `<span class="av" style="color:${COLORS[i]}">${AVATARS[t.av]}</span>`;
+
+let AC;
+function beep(f,d=.12,type='square',when=0,vol=.07){
+  if(S.muted) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const t=AC.currentTime+when, o=AC.createOscillator(), g=AC.createGain();
+    o.type=type; o.frequency.value=f;
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g).connect(AC.destination); o.start(t); o.stop(t+d+.02);
+  }catch(e){}
+}
+const SFX = {
+  ok(){[523,659,784,1047].forEach((f,i)=>beep(f,.14,'square',i*.08))},
+  bad(){beep(180,.35,'sawtooth');beep(120,.45,'sawtooth',.15)},
+  alarm(){for(let i=0;i<4;i++){beep(880,.14,'square',i*.3);beep(620,.14,'square',i*.3+.15)}},
+  up(){[392,523,659,784,1047,1319].forEach((f,i)=>beep(f,.13,'triangle',i*.07,.1))},
+  click(){beep(720,.05,'square',0,.04)},
+  tick(){beep(1250,.03,'square',0,.03)},
+  boot(){[200,300,450,700,1000].forEach((f,i)=>beep(f,.1,'sine',i*.09,.08))}
+};
+
+let toastT;
+function toast(msg){
+  const el=$('#toast'); el.textContent=msg; el.hidden=false;
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  clearTimeout(toastT); toastT=setTimeout(()=>el.hidden=true,2600);
+}
+function addPts(i,n){
+  const t=S.teams[i], before=lvl(t.score);
+  t.score=Math.max(0,t.score+n);
+  if(lvl(t.score)>before){ SFX.up(); toast(`LEVEL UP! ${t.name} → Level ${lvl(t.score)}`); }
+  renderBoard();
+}
+
+/* ---------- Timer (com pausa) ---------- */
+let timerI=null, T=null;
+function stopTimer(){clearInterval(timerI);timerI=null;T=null;hideOverlay()}
+function updateBar(){
+  if(!T) return;
+  const bar=$('.timer i');
+  if(bar){bar.style.transform=`scaleX(${T.left/T.total})`;bar.classList.toggle('low',T.left<6)}
+  const pb=$('[data-act="pause"]'); if(pb) pb.textContent=T.paused?'▶ Continuar':'⏸ Pausar';
+}
+function startTimer(sec,onEnd,left=sec){
+  clearInterval(timerI);
+  T={total:sec,left,onEnd,paused:false,last:Math.ceil(left),up:false};
+  S.q.total=sec; S.q.left=left; updateBar();
+  let prev=Date.now();
+  timerI=setInterval(()=>{
+    const now=Date.now();
+    if(!T||T.paused||T.up){prev=now;return}
+    T.left=Math.max(0,T.left-(now-prev)/1000); prev=now; S.q.left=T.left;
+    updateBar();
+    const s=Math.ceil(T.left);
+    if(s<T.last){T.last=s; if(s<=5&&s>0) SFX.tick();}
+    if(T.left<=0){ T.up=true; SFX.bad(); showOverlay('time'); }
+  },100);
+}
+function togglePause(){
+  if(!T||T.up) return;
+  T.paused=!T.paused; SFX.click(); updateBar();
+  T.paused?showOverlay('pause'):hideOverlay();
+}
+function showOverlay(kind){
+  $('#ov-title').textContent=kind==='time'?'Tempo esgotado!':'Jogo pausado';
+  $('#ov-title').className='big-t '+kind;
+  $('#ov-text').textContent=kind==='time'?'O relógio parou. Clique em Continuar para ver a resposta.':'O relógio está parado. Clique em Continuar (ou aperte espaço) para voltar ao jogo.';
+  $('#overlay').hidden=false; $('#ov-go').focus();
+}
+function hideOverlay(){ const o=$('#overlay'); if(o) o.hidden=true; }
+function resume(){
+  if(!T){hideOverlay();return}
+  if(T.up){ const f=T.onEnd; clearInterval(timerI); timerI=null; T=null; hideOverlay(); f(); return; }
+  if(T.paused) togglePause();
+}
+
+/* ---------- Layout ---------- */
+function frame(inner,{board=true}={}){
+  const onSetup=S.screen==='setup';
+  $('#app').innerHTML=`
+    <header class="bar">
+      <div class="brand"><span>Hacker do Pensamento</span><small>LEVEL 3 · NOVA MENTALIDADE</small></div>
+      <div class="tools">
+        ${onSetup?'':'<button class="tbtn" data-act="hub">Menu</button>'}
+        <button class="tbtn" data-act="mute" aria-pressed="${S.muted}">${S.muted?'Som: off':'Som: on'}</button>
+      </div>
+    </header>
+    <main>${inner}</main>
+    <footer class="board" id="board" ${board?'':'hidden'}></footer>`;
+  renderBoard();
+}
+function renderBoard(){
+  const b=$('#board'); if(!b) return;
+  b.style.setProperty('--n',S.n);
+  const active=['p1','p2','p3'].includes(S.screen)?S.turn:-1;
+  b.innerHTML=teams().map((t,i)=>`
+    <div class="team ${i===active?'active':''}" style="color:${COLORS[i]}">
+      ${avHTML(i,t)}
+      <div class="info"><div class="n">${esc(t.name)}</div><div class="s">${t.score}<small>LVL ${lvl(t.score)}</small></div></div>
+      <div class="adj"><button data-adj="${i}" data-v="5" aria-label="Mais 5 pontos para ${esc(t.name)}">+</button><button data-adj="${i}" data-v="-5" aria-label="Menos 5 pontos para ${esc(t.name)}">−</button></div>
+    </div>`).join('');
+}
+
+/* ---------- Telas ---------- */
+function render(){
+  stopTimer();
+  ({setup,hub,p1:renderP1,p2:renderP2,p3:renderP3,end,oath}[S.screen]||setup)();
+}
+
+function setup(){
+  frame(`
+    <div class="eyebrow">Encontro 3 · Filipenses 4:8</div>
+    <h1 class="glitch">Hacker do<br>Pensamento</h1>
+    <p class="lead">Um hacker quer instalar vírus na mente dos jogadores. Montem os times e ativem o Firewall de Paulo!</p>
+    <div class="row" style="align-items:center">
+      <span class="count">Times:</span>
+      <div class="seg" role="group" aria-label="Quantidade de times">
+        ${[2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}
+      </div>
+    </div>
+    <div class="row" style="align-items:center">
+      <span class="count">Tempo por jogada:</span>
+      <div class="seg" role="group" aria-label="Tempo por jogada">
+        ${[30,45,60,90].map(k=>`<button data-secs="${k}" aria-pressed="${S.secs===k}">${k}s</button>`).join('')}
+      </div>
+    </div>
+    <div class="teams">
+      ${teams().map((t,i)=>`
+        <div class="tcard">
+          <button class="av" style="color:${COLORS[i]}" data-av="${i}" aria-label="Trocar avatar">${AVATARS[t.av]}</button>
+          <input id="team-name-${i}" data-name="${i}" value="${esc(t.name)}" maxlength="18" aria-label="Nome do time ${i+1}">
+        </div>`).join('')}
+    </div>
+    <button class="btn" data-act="start">Iniciar sistema</button>
+  `,{board:false});
+}
+
+function hub(){
+  const m=[
+    [1,'Invasão do Hacker',`Um vírus aparece na tela. O time escolhe qual dos 6 FIREWALLS de Fp 4:8 desinstala o vírus. 24 vírus, ${S.secs} segundos cada.`],
+    [2,'Firewall dos Pensamentos','Uma situação aparece. O time escolhe a carta PASSA ou BLOQUEIA e depois a carta Firewall certa.'],
+    [3,'Código de Segurança','Montem a senha do Firewall: os 6 filtros de Filipenses 4:8 na ordem certa, contra o relógio.']
+  ];
+  frame(`
+    <div class="eyebrow">Sistema invadido · escolham a missão</div>
+    <h2>Instalem o Antivírus de Paulo</h2>
+    <div class="missions">
+      ${m.map(([k,t,d])=>`
+        <button class="mission ${S.done[k]?'done':''}" data-go="${k}">
+          <span class="num">MISSÃO ${k}</span>
+          <h3>${t}</h3>
+          <p>${d}</p>
+          <span class="st">${S.done[k]?'✓ Concluída · jogar de novo':'▶ Iniciar'}</span>
+        </button>`).join('')}
+    </div>
+    <div class="row">
+      <button class="btn ghost" data-act="end">Placar final</button>
+      <button class="btn ghost" data-act="oath">Oração final</button>
+    </div>
+  `);
+}
+
+/* ----- Missão 1 ----- */
+function startP1(){
+  S.p1={order:shuffle(VIRUS.map((_,i)=>i)),i:0};
+  S.turn=0; newQ1(); S.screen='p1'; SFX.alarm(); render();
+}
+function newQ1(){
+  const v=VIRUS[S.p1.order[S.p1.i]];
+  S.q={picked:null,just:false,accepted:false};
+}
+function renderP1(){
+  const v=VIRUS[S.p1.order[S.p1.i]], q=S.q, t=S.teams[S.turn], answered=q.picked!==null;
+  const ok=answered&&v[2].includes(q.picked);
+  frame(`
+    <div class="meta">
+      <div class="turn">${avHTML(S.turn,t)}<span>Vez do ${esc(t.name)}</span></div>
+      ${answered?'':'<button class="pbtn" data-act="pause">⏸ Pausar</button>'}
+      <div class="count">MISSÃO 1 · VÍRUS ${S.p1.i+1}/${VIRUS.length}</div>
+    </div>
+    <div class="timer"><i style="transform:scaleX(${answered?0:1})"></i></div>
+    <div class="card virus pop">
+      <div class="tag">⚠ Vírus detectado · ${esc(v[0])}</div>
+      <div class="quote glitch">“${esc(v[1].toUpperCase())}”</div>
+    </div>
+    ${answered?'':'<p class="hint">Escolham a carta FIREWALL que desinstala esse vírus. Expliquem em voz alta antes de escolher! (teclas 1 a 6)</p>'}
+    ${fwCards('p1',answered?{picked:q.picked,right:v[2]}:{})}
+    ${answered?`
+      <div class="feedback ${ok||q.accepted?'ok':'bad'} pop">
+        <h3>${ok?'Vírus desinstalado!':q.accepted?'Resposta aceita pelo Game Master!':q.picked==='timeout'?'Tempo esgotado! O sistema travou.':'O vírus continua rodando!'}</h3>
+        ${ok?`<div class="pts">+${q.gain} XP</div>`:q.accepted?'<div class="pts">+10 XP</div>':''}
+        <p>Firewall${v[2].length>1?'s':''} que desinstala${v[2].length>1?'m':''} esse vírus: <b>${v[2].map(f=>FILTERS[f]).join(' · ')}</b></p>
+        <div class="row">
+          ${ok&&!q.just?'<button class="btn small ghost" data-act="just">+5 Explicaram em voz alta</button>':''}
+          ${!ok&&!q.accepted?'<button class="btn small ghost" data-act="accept">Aceitar: justificaram bem (+10)</button>':''}
+          <button class="btn" data-act="next1">${S.p1.i+1<VIRUS.length?'Próximo vírus →':'Concluir missão'}</button>
+        </div>
+      </div>`:''}
+  `);
+  if(!answered) startTimer(S.secs,()=>answerP1('timeout'),q.left??S.secs);
+}
+function answerP1(k){
+  if(S.q.picked!==null) return;
+  stopTimer();
+  const v=VIRUS[S.p1.order[S.p1.i]];
+  S.q.picked=k;
+  if(v[2].includes(k)){ const bonus=Math.min(5,Math.ceil((S.q.left??0)/S.secs*5)); S.q.gain=10+bonus; SFX.ok(); addPts(S.turn,S.q.gain); }
+  else SFX.bad();
+  renderP1();
+  if(!v[2].includes(k)) $('.card').classList.add('shake');
+}
+function nextP1(){
+  S.p1.i++;
+  if(S.p1.i>=VIRUS.length){ S.done[1]=true; S.screen='hub'; toast('Missão 1 concluída!'); SFX.up(); render(); return; }
+  S.turn=(S.turn+1)%S.n; newQ1(); render();
+}
+
+/* ----- Cartas Firewall (6 da aula) ----- */
+function fwCards(attr,{picked=null,right=null}={}){
+  const reveal=right!==null;
+  return `<div class="opts">${FORDER.map((k,i)=>{
+    let c=''; if(reveal){ if(right.includes(k)) c='right'; else if(k===picked) c='wrong'; else c='dim'; }
+    return `<button class="opt ${c} ${reveal?'':'deal'}" style="animation-delay:${i*.08}s" data-${attr}="${k}" ${reveal?'disabled':''} aria-label="Firewall ${FILTERS[k]}: ${FWDESC[k]}"><span class="band">FIREWALL<span class="k">${i+1}</span></span>${SHIELD}<b>${FILTERS[k]}</b><span class="ph">${FWDESC[k]}</span></button>`;
+  }).join('')}</div>`;
+}
+
+/* ----- Missão 2 ----- */
+function startP2(){
+  S.p2={order:shuffle(SIT.map((_,i)=>i)),i:0};
+  S.turn=0; S.q={stage:'decide'}; S.screen='p2'; SFX.alarm(); render();
+}
+function renderP2(){
+  const s=SIT[S.p2.order[S.p2.i]], q=S.q, t=S.teams[S.turn];
+  let body='';
+  if(q.stage==='decide'){
+    body=`
+      <p class="hint">Esse pensamento passa pelo Firewall de Filipenses 4:8? Escolham a carta! (teclas P ou B)</p>
+      <div class="choice">
+        <button class="opt deal" data-p2="pass" aria-label="Passa: deixa entrar"><span class="band">DEIXAR ENTRAR<span class="k">P</span></span>${SHIELD}<b>Passa</b><span class="ph">É coisa boa: nisso pensai!</span></button>
+        <button class="opt dblock deal" style="animation-delay:.1s" data-p2="block" aria-label="Bloqueia: é vírus"><span class="band">BLOQUEAR<span class="k">B</span></span>${BUG}<b>Bloqueia</b><span class="ph">É vírus: não pode entrar!</span></button>
+      </div>`;
+  } else if(q.stage==='filter'){
+    body=`
+      <div class="feedback ok pop"><h3>${s[1]?'Passou!':'Bloqueado!'} +10 XP</h3><p>Bônus +5: ${s[1]?'qual carta Firewall combina com essa atitude?':'em qual carta Firewall esse pensamento falhou?'} (teclas 1 a 6)</p></div>
+      ${fwCards('f')}`;
+  } else {
+    const good=q.correct;
+    body=`
+      ${fwCards('x',{picked:q.fpick||null,right:s[2]})}
+      <div class="feedback ${good?'ok':'bad'} pop">
+        <h3>${q.timeout?'Tempo esgotado!':good?(s[1]?'Passou no Firewall!':'Vírus bloqueado!'):(s[1]?'Opa! Esse era do bem.':'O vírus entrou!')}</h3>
+        ${q.gain?`<div class="pts">+${q.gain} XP</div>`:''}
+        <p>${esc(s[3])}</p>
+        <button class="btn" data-act="next2">${S.p2.i+1<SIT.length?'Próxima situação →':'Concluir missão'}</button>
+      </div>`;
+  }
+  frame(`
+    <div class="meta">
+      <div class="turn">${avHTML(S.turn,t)}<span>Vez do ${esc(t.name)}</span></div>
+      ${q.stage==='decide'?'<button class="pbtn" data-act="pause">⏸ Pausar</button>':''}
+      <div class="count">MISSÃO 2 · SITUAÇÃO ${S.p2.i+1}/${SIT.length}</div>
+    </div>
+    <div class="timer"><i style="transform:scaleX(${q.stage==='decide'?1:0})"></i></div>
+    <div class="card sit ${q.stage==='decide'?'pop':''}">
+      <div class="tag">Pensamento chegando…</div>
+      <div class="quote">${esc(s[0])}</div>
+    </div>
+    ${body}
+  `);
+  if(q.stage==='decide') startTimer(S.secs,()=>{ S.q={stage:'result',correct:false,timeout:true,gain:0}; SFX.bad(); renderP2(); });
+}
+function answerP2(choice){
+  if(S.q.stage!=='decide') return;
+  stopTimer();
+  const s=SIT[S.p2.order[S.p2.i]], pass=choice==='pass', correct=pass===s[1];
+  if(!correct){ S.q={stage:'result',correct:false,gain:0}; SFX.bad(); renderP2(); $('.card').classList.add('shake'); return; }
+  SFX.ok(); addPts(S.turn,10);
+  S.q={stage:'filter',correct:true,gain:10};
+  renderP2();
+}
+function pickFilter(f){
+  if(S.q.stage!=='filter') return;
+  const s=SIT[S.p2.order[S.p2.i]], hit=s[2].includes(f);
+  if(hit){ SFX.ok(); addPts(S.turn,5); } else SFX.bad();
+  S.q={stage:'result',correct:true,gain:10+(hit?5:0),fpick:f};
+  renderP2();
+}
+function nextP2(){
+  S.p2.i++;
+  if(S.p2.i>=SIT.length){ S.done[2]=true; S.screen='hub'; toast('Missão 2 concluída!'); SFX.up(); render(); return; }
+  S.turn=(S.turn+1)%S.n; S.q={stage:'decide'}; render();
+}
+
+/* ----- Missão 3 ----- */
+function startP3(){ S.turn=0; S.q={stage:'ready'}; S.screen='p3'; render(); }
+function renderP3(){
+  const q=S.q, t=S.teams[S.turn];
+  const placed=q.placed||0;
+  const slots=FORDER.map((f,i)=>`tudo o que é <span class="slot ${i===placed&&q.stage==='play'?'next':''}">${i<placed?FILTERS[f]:'&nbsp;'}</span>`);
+  const verse=`“Quanto ao mais, irmãos, ${slots.slice(0,5).join(', ')}, e ${slots[5].replace('tudo o que é','tudo o que é de')}; se há alguma virtude, e se há algum louvor, <b>nisso pensai</b>.”`;
+  let body='';
+  if(q.stage==='ready'){
+    body=`<p class="hint">Cliquem nos filtros na ordem em que aparecem no versículo. ${S.secs+15} segundos!</p>
+      <button class="btn" data-act="go3">Começar</button>`;
+  } else if(q.stage==='play'){
+    body=`<div class="chips">${q.chips.map(f=>`<button class="chip" data-c="${f}" ${q.used.includes(f)?'disabled':''}>${FILTERS[f]}</button>`).join('')}</div>`;
+  } else {
+    const last=S.turn+1>=S.n;
+    body=`<div class="feedback ${placed===6?'ok':'bad'} pop">
+        <h3>${placed===6?'Código de segurança instalado!':'Tempo esgotado!'}</h3>
+        <div class="pts">+${q.gain} XP</div>
+        <p>${placed}/6 filtros no lugar${q.errors?` · ${q.errors} erro${q.errors>1?'s':''}`:''}</p>
+        <button class="btn" data-act="next3">${last?'Concluir missão':'Próximo time →'}</button>
+      </div>`;
+  }
+  frame(`
+    <div class="meta">
+      <div class="turn">${avHTML(S.turn,t)}<span>Vez do ${esc(t.name)}</span></div>
+      ${q.stage==='play'?'<button class="pbtn" data-act="pause">⏸ Pausar</button>':''}
+      <div class="count">MISSÃO 3 · CÓDIGO DE SEGURANÇA</div>
+    </div>
+    <div class="timer"><i style="transform:scaleX(${q.stage==='play'?1:q.stage==='ready'?1:0})"></i></div>
+    <div class="verse">${verse}<br><span class="count">Filipenses 4:8</span></div>
+    ${body}
+  `);
+  if(q.stage==='play') startTimer(S.secs+15,finishP3,q.left??S.secs+15);
+}
+function go3(){ S.q={stage:'play',placed:0,used:[],chips:shuffle(FORDER),errors:0}; SFX.boot(); renderP3(); }
+function pickChip(f,el){
+  const q=S.q; if(q.stage!=='play') return;
+  if(f===FORDER[q.placed]){
+    q.placed++; q.used.push(f); SFX.click();
+    if(q.placed===6){ finishP3(); return; }
+    renderP3();
+  } else { q.errors++; SFX.bad(); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+}
+function finishP3(){
+  stopTimer();
+  const q=S.q; if(q.stage!=='play') return;
+  const bonus=q.placed===6?Math.ceil((q.left||0)/(S.secs+15)*15):0;
+  q.gain=q.placed*5+bonus; q.stage='done';
+  if(q.placed===6) SFX.up(); else SFX.bad();
+  addPts(S.turn,q.gain); renderP3();
+}
+function nextP3(){
+  if(S.turn+1>=S.n){ S.done[3]=true; S.screen='hub'; toast('Missão 3 concluída!'); render(); return; }
+  S.turn++; S.q={stage:'ready'}; render();
+}
+
+/* ----- Final ----- */
+function end(){
+  const r=teams().map((t,i)=>({...t,i})).sort((a,b)=>b.score-a.score);
+  frame(`
+    <div class="eyebrow">Sistema protegido</div>
+    <h2>Placar final</h2>
+    <div class="rank">
+      ${r.map((t,k)=>`
+        <div class="rk ${k===0?'first':''} pop">
+          <span class="pos">${k+1}º</span>
+          ${avHTML(t.i,t)}
+          <span class="nm">${esc(t.name)}<small>${k===0?'HERÓI DO REINO · ':''}LEVEL ${lvl(t.score)}</small></span>
+          <span class="sc">${t.score}</span>
+        </div>`).join('')}
+    </div>
+    <p class="lead">Todos os times instalaram o Firewall. Quem pensa no que é verdadeiro, honesto, justo, puro, amável e de boa fama já subiu de nível.</p>
+    <div class="row"><button class="btn" data-act="oath">Oração final</button></div>
+  `);
+  SFX.up();
+}
+function oath(){
+  frame(`
+    <div class="eyebrow">Mãos na cabeça · no processador</div>
+    <p class="oath">Eu escolho pensar no que é <em>verdadeiro</em>, <em>honesto</em>, <em>justo</em>, <em>puro</em>, <em>amável</em> e de <em>boa fama</em>. Minha mente está atualizada para o Level Up!</p>
+    <p class="lead">Desafio da semana: quando um vírus chegar, repita Filipenses 4:8 e ative o Firewall.</p>
+  `);
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const d=b.dataset;
+  if(d.n){ S.n=+d.n; SFX.click(); render(); return; }
+  if(d.secs){ S.secs=+d.secs; SFX.click(); render(); return; }
+  if(d.av){ const t=S.teams[+d.av]; t.av=(t.av+1)%AVATARS.length; SFX.click(); b.textContent=AVATARS[t.av]; return; }
+  if(d.adj){ addPts(+d.adj,+d.v); SFX.click(); return; }
+  if(d.go){ SFX.click(); ({1:startP1,2:startP2,3:startP3})[d.go](); return; }
+  if(d.p1){ answerP1(d.p1); return; }
+  if(d.p2){ answerP2(d.p2); return; }
+  if(d.f){ pickFilter(d.f); return; }
+  if(d.c){ pickChip(d.c,b); return; }
+  switch(d.act){
+    case 'mute': S.muted=!S.muted; b.textContent=S.muted?'Som: off':'Som: on'; b.setAttribute('aria-pressed',S.muted); break;
+    case 'start': SFX.alarm(); S.screen='hub'; render(); toast('ALERTA: Hacker detectado!'); break;
+    case 'hub': S.screen='hub'; render(); break;
+    case 'pause': togglePause(); break;
+    case 'resume': resume(); break;
+    case 'end': S.screen='end'; render(); break;
+    case 'oath': S.screen='oath'; render(); break;
+    case 'just': S.q.just=true; addPts(S.turn,5); SFX.ok(); renderP1(); break;
+    case 'accept': S.q.accepted=true; addPts(S.turn,10); SFX.ok(); renderP1(); break;
+    case 'next1': nextP1(); break;
+    case 'next2': nextP2(); break;
+    case 'go3': go3(); break;
+    case 'next3': nextP3(); break;
+  }
+});
+document.addEventListener('input',e=>{
+  const i=e.target.dataset.name; if(i!==undefined) S.teams[+i].name=e.target.value.trim()||`Time ${+i+1}`;
+});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  const k=e.key.toLowerCase();
+  if(!$('#overlay').hidden){ if(k===' '||k==='enter'){e.preventDefault();resume()} return; }
+  if(k===' '&&T){ e.preventDefault(); togglePause(); return; }
+  if(S.screen==='p1'&&S.q.picked===null&&['1','2','3','4','5','6'].includes(k)){ answerP1(FORDER[+k-1]); return; }
+  if(S.screen==='p2'&&S.q.stage==='decide'){ if(k==='p') answerP2('pass'); if(k==='b') answerP2('block'); }
+  if(S.screen==='p2'&&S.q.stage==='filter'&&['1','2','3','4','5','6'].includes(k)){ pickFilter(FORDER[+k-1]); return; }
+  if(k==='enter'&&!e.target.closest('button')){
+    const nx=document.querySelector('[data-act^="next"],[data-act="go3"]'); if(nx) nx.click();
+  }
+});
+
+/* ---------- Boot ---------- */
+function start(data){
+  if(data&&data.S) S=data.S;
+  if(S.secs==null) S.secs=45;
+  render();
+}
+window.claude?.hot?.snapshot?.(()=>({S}));
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+</script>
+
+<a class="home-link" href="index.html" aria-label="Voltar para a página inicial">⌂ Início</a>
+</body>
+</html>
