@@ -18,6 +18,7 @@ PAGES = {
     "hacker-do-pensamento.html": "hacker-do-pensamento.html",
     "defesa-da-mente.html": "defesa-da-mente.html",
     "trilha-do-firewall.html": "trilha-do-firewall.html",
+    "combo-da-vida.html": "combo-da-vida.html",
 }
 
 HEAD = """<!doctype html>

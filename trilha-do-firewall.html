@@ -267,6 +267,19 @@ button{touch-action:manipulation}
   .hint{font-size:14px}
   .announce{font-size:34px}
 }
+
+/* ---- configuração no celular ---- */
+@media (max-width:600px){
+  .row:has(>.seg){flex-direction:column;align-items:stretch;width:100%;gap:6px}
+  .row:has(>.seg) .count{text-align:left;font-size:18px}
+  .seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(60px,1fr));width:100%}
+  .seg button{white-space:normal;line-height:1.15;padding:9px 6px;font-size:19px}
+  .teams{grid-template-columns:1fr 1fr;gap:8px}
+  .tcard{flex-direction:column;padding:10px;gap:8px}
+  .tcard .av{width:44px;height:44px;font-size:24px}
+  .tcard input{font-size:16px;padding:7px 8px;text-align:center}
+  h1{font-size:44px}
+}
 </style>
 
 <div id="app"></div>
