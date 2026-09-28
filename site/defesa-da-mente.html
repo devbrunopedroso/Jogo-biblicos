@@ -181,6 +181,38 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,46px);lin
   .cpu .t{display:none}
   .rk{grid-template-columns:40px auto 1fr auto;padding:10px 12px}
 }
+
+/* ---- celular ---- */
+button{touch-action:manipulation}
+@media (max-width:600px){
+  #app{padding-inline:12px}
+  .bar{padding-block:10px;gap:8px}
+  .brand{font-size:15px}
+  .brand small{display:none}
+  .tbtn{font-size:18px;padding:3px 9px}
+  main{gap:14px;padding-block:8px 16px}
+  .btn{padding:12px 18px}
+  .seg{flex-wrap:wrap}
+  .seg button{padding:6px 12px;font-size:20px}
+  .count{font-size:20px}
+  .eyebrow{font-size:20px}
+  .row{gap:10px}
+}
+@media (max-width:600px){
+  .field{height:clamp(380px,calc(100dvh - 250px),700px);touch-action:none;border-radius:14px}
+  .item{padding:8px 9px;font-size:14px}
+  .item .lab{font-size:15px}
+  .score{font-size:34px}
+  .turn{font-size:15px}
+  .turn .av{width:34px;height:34px;font-size:19px}
+  .lives svg{width:20px;height:23px}
+  .pbtn{font-size:18px;padding:3px 10px}
+  .slot{font-size:8px}
+  .stat b{font-size:34px}
+  .levels .lvl{padding:14px}
+  .team{padding:6px}
+  .team .av{width:34px;height:34px;font-size:19px}
+}
 </style>
 
 <div id="app"></div>
@@ -303,7 +335,7 @@ function setup(){
     <p class="lead">Pensamentos estão caindo no processador da mente. Leia rápido: bloqueie os vírus, deixe o que é bom entrar!</p>
     <div class="row">
       <span class="count">Times:</span>
-      <div class="seg" role="group" aria-label="Quantidade de times">${[2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}</div>
+      <div class="seg" role="group" aria-label="Quantidade de times">${[1,2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}</div>
       <span class="count">Tempo por rodada:</span>
       <div class="seg" role="group" aria-label="Tempo por rodada">${[45,60,90].map(k=>`<button data-secs="${k}" aria-pressed="${S.secs===k}">${k}s</button>`).join('')}</div>
     </div>
@@ -318,6 +350,7 @@ function setup(){
       <span class="count">Velocidade:</span>
       <div class="seg" role="group" aria-label="Velocidade">${Object.entries(SPEEDS).map(([k,[l]])=>`<button data-speed="${k}" aria-pressed="${S.speed===k}">${l}</button>`).join('')}</div>
     </div>
+    ${S.n===1?'<p class="lead" style="font-size:16px">Modo treino: um jogador (ou um time só) joga sozinho para praticar.</p>':''}
     <div class="teams">
       ${teams().map((t,i)=>`<div class="tcard"><button class="av" style="color:${COLORS[i]}" data-av="${i}" aria-label="Trocar avatar">${AVATARS[t.av]}</button><input id="team-name-${i}" data-name="${i}" value="${esc(t.name)}" maxlength="18" aria-label="Nome do time ${i+1}"></div>`).join('')}
     </div>
@@ -437,7 +470,7 @@ function update(dt){
   const d=Math.min(1,G.t/S.secs);
   // spawn
   G.spawnT-=dt; G.powerT-=dt;
-  if(G.spawnT<=0){ spawn(Math.random()<.58?'virus':'fw'); G.spawnT=1.15-.55*d*Math.min(1,ramp())+Math.random()*.25; }
+  if(G.spawnT<=0){ spawn(Math.random()<.58?'virus':'fw'); G.spawnT=(1.15-.55*d*Math.min(1,ramp())+Math.random()*.25)*(fieldSize().w<520?1.35:1); }
   if(G.powerT<=0){ spawn('power'); G.powerT=14+Math.random()*8; }
   // mover
   const {h}=fieldSize(), floor=h-64;
@@ -467,7 +500,9 @@ function spawn(kind){
   let x=0; for(let tries=0;tries<8;tries++){ x=Math.random()*(w-iw); if(!G.items.some(o=>!o.dead&&o.y<40&&Math.abs(o.x-x)<iw+8)) break; }
   it.x=x;
   const d=Math.min(1,G.t/S.secs);
-  it.v=(kind==='power'?120:85+90*d*ramp())+Math.random()*25;
+  // no celular o campo é mais baixo: a queda acompanha a altura para dar tempo de ler
+  const hs=Math.min(1.1,Math.max(.6,fieldSize().h/600));
+  it.v=((kind==='power'?120:85+90*d*ramp())+Math.random()*25)*hs;
   el.style.transform=`translate(${x}px,${it.y}px)`;
   el.addEventListener('pointerdown',e=>{e.preventDefault();hitItem(it)});
   f.appendChild(el); G.items.push(it);

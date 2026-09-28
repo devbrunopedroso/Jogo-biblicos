@@ -209,6 +209,50 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,44px);lin
   .board{grid-template-columns:1fr 1fr}
   .rk{grid-template-columns:40px auto 1fr auto;padding:10px 12px}
 }
+
+/* ---- celular ---- */
+button{touch-action:manipulation}
+@media (max-width:600px){
+  #app{padding-inline:12px}
+  .bar{padding-block:10px;gap:8px}
+  .brand{font-size:15px}
+  .brand small{display:none}
+  .tbtn{font-size:18px;padding:3px 9px}
+  main{gap:14px;padding-block:8px 16px}
+  .btn{padding:12px 18px}
+  .seg{flex-wrap:wrap}
+  .seg button{padding:6px 12px;font-size:20px}
+  .count{font-size:20px}
+  .eyebrow{font-size:20px}
+  .row{gap:10px}
+}
+@media (max-width:600px){
+  .opts{grid-template-columns:repeat(3,1fr);gap:8px}
+  .opt{aspect-ratio:auto;min-height:0;gap:4px;padding-bottom:8px;border-width:3px;box-shadow:0 4px 0 #0B0A26}
+  .opt .band{font-size:15px;padding:4px 6px;letter-spacing:.06em}
+  .opt .k{width:22px;height:22px;font-size:13px}
+  .opt .shield{width:34px;margin-top:2px}
+  .opt b{font-size:14px}
+  .opt .ph{display:none}
+  .choice{grid-template-columns:1fr 1fr;gap:12px}
+  .choice .opt{aspect-ratio:auto;padding-bottom:12px}
+  .choice .opt .ph{display:block;font-size:13px}
+  .choice .opt b{font-size:22px}
+  .card{padding:16px}
+  .card .tag{font-size:20px}
+  .hint{font-size:15px}
+  .meta{gap:8px}
+  .turn{font-size:16px}
+  .turn .av{width:36px;height:36px;font-size:20px}
+  .feedback{padding:14px}
+  .feedback p{font-size:16px}
+  .verse{padding:14px;font-size:17px}
+  .chip{font-size:16px;padding:10px 14px}
+  .team{padding:6px}
+  .team .av{width:34px;height:34px;font-size:19px}
+  .adj{display:none}
+  .overlay .big-t{font-size:40px}
+}
 </style>
 
 <div id="app"></div>
@@ -423,7 +467,7 @@ function setup(){
     <div class="row" style="align-items:center">
       <span class="count">Times:</span>
       <div class="seg" role="group" aria-label="Quantidade de times">
-        ${[2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}
+        ${[1,2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}
       </div>
     </div>
     <div class="row" style="align-items:center">
@@ -432,6 +476,7 @@ function setup(){
         ${[30,45,60,90].map(k=>`<button data-secs="${k}" aria-pressed="${S.secs===k}">${k}s</button>`).join('')}
       </div>
     </div>
+    ${S.n===1?'<p class="lead" style="font-size:16px">Modo treino: um jogador (ou um time só) joga sozinho para praticar.</p>':''}
     <div class="teams">
       ${teams().map((t,i)=>`
         <div class="tcard">

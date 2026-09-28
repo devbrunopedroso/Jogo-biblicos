@@ -216,6 +216,57 @@ h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3.4vw,40px);l
   .opts{grid-template-columns:repeat(2,1fr)}
   .rk{grid-template-columns:40px auto 1fr auto;padding:10px 12px}
 }
+
+/* ---- celular ---- */
+button{touch-action:manipulation}
+@media (max-width:600px){
+  #app{padding-inline:12px}
+  .bar{padding-block:10px;gap:8px}
+  .brand{font-size:15px}
+  .brand small{display:none}
+  .tbtn{font-size:18px;padding:3px 9px}
+  main{gap:14px;padding-block:8px 16px}
+  .btn{padding:12px 18px}
+  .seg{flex-wrap:wrap}
+  .seg button{padding:6px 12px;font-size:20px}
+  .count{font-size:20px}
+  .eyebrow{font-size:20px}
+  .row{gap:10px}
+}
+@media (max-width:620px){
+  /* painel do dado vira uma barra fixa no topo, acima do tabuleiro */
+  .side{display:contents}
+  .turnbox{order:-1}
+  .boardwrap{order:0}
+  .side>.box:not(.turnbox){order:1}
+  .turnbox{position:sticky;top:env(safe-area-inset-top,0px);z-index:4;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"die turn" "die btn" "log log";gap:6px 12px;padding:10px 12px;text-align:left;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+  .turnbox .turn{grid-area:turn;font-size:15px}
+  .turnbox .turn .av{width:32px;height:32px;font-size:18px}
+  .turnbox .die{grid-area:die;width:64px;height:64px;padding:9px;border-radius:12px}
+  .turnbox .btn{grid-area:btn;justify-self:start;padding:10px 16px;font-size:15px}
+  .turnbox .log{grid-area:log;min-height:0;font-size:14px}
+  .legendbox{display:none}
+  .game{gap:10px}
+  .sq{padding:4px;border-radius:9px;border-width:2px}
+  .sq .no{font-size:14px}
+  .sq .ic{font-size:18px}
+  .sq .lb{font-size:8px}
+  .tok{width:22px;height:22px;font-size:12px;border-width:2px}
+  .opts{grid-template-columns:repeat(3,1fr);gap:8px}
+  .opt{padding-bottom:8px;border-width:3px}
+  .opt .band{font-size:14px;padding:3px 6px}
+  .opt svg{width:30px}
+  .opt b{font-size:13px}
+  .opt.big b{font-size:20px}
+  .card{padding:14px}
+  .card .tag{font-size:19px}
+  .card .quote{font-size:22px}
+  .card .txt{font-size:17px}
+  .fb{padding:12px}
+  .fb p{font-size:15px}
+  .hint{font-size:14px}
+  .announce{font-size:34px}
+}
 </style>
 
 <div id="app"></div>
@@ -359,10 +410,11 @@ function setup(){
     <p class="lead">Os times percorrem a trilha da mente. No caminho tem desafios, ataques de vírus e os 6 Firewalls de Filipenses 4:8. Quem chegar primeiro à Mente Atualizada vence!</p>
     <div class="row">
       <span class="count">Times:</span>
-      <div class="seg" role="group" aria-label="Quantidade de times">${[2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}</div>
+      <div class="seg" role="group" aria-label="Quantidade de times">${[1,2,3,4].map(k=>`<button data-n="${k}" aria-pressed="${S.n===k}">${k}</button>`).join('')}</div>
       <span class="count">Tempo por pergunta:</span>
       <div class="seg" role="group" aria-label="Tempo por pergunta">${[30,45,60,90].map(k=>`<button data-secs="${k}" aria-pressed="${S.secs===k}">${k}s</button>`).join('')}</div>
     </div>
+    ${S.n===1?'<p class="lead" style="font-size:16px">Modo treino: um jogador (ou um time só) joga sozinho para praticar.</p>':''}
     <div class="teams">${teams().map((t,i)=>`<div class="tcard"><button class="av" style="color:${COLORS[i]}" data-av="${i}" aria-label="Trocar avatar">${AVATARS[t.av]}</button><input id="team-name-${i}" data-name="${i}" value="${esc(t.name)}" maxlength="18" aria-label="Nome do time ${i+1}"></div>`).join('')}</div>
     <button class="btn" data-act="begin">Começar a trilha</button>
   `);
@@ -397,14 +449,14 @@ function renderGame(){
         <div id="modal"></div>
       </div>
       <aside class="side">
-        <div class="box">
+        <div class="box turnbox">
           <div class="turn">${avHTML(S.turn,t)}<span>Vez do ${esc(t.name)}</span></div>
           ${dieHTML(S.die)}
           <button class="btn" data-act="roll" ${S.phase==='roll'?'':'disabled'}>Rolar dado</button>
           <div class="log" id="log">${S.log}</div>
         </div>
         <div class="box"><div class="standing" id="standing"></div></div>
-        <div class="box">
+        <div class="box legendbox">
           <div class="legend">
             <span class="k" style="border-color:var(--sky)"></span><span><b style="color:var(--sky)">Desafio:</b> acertou, avança 2. Errou, volta 1.</span>
             <span class="k" style="border-color:var(--virus);background:#3A1150"></span><span><b style="color:var(--virus)">Vírus:</b> bloqueie com o Firewall certo ou volte 3.</span>
